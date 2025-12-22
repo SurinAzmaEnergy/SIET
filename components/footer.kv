@@ -1,0 +1,43 @@
+#: kivy 2.3.1
+
+#: include components/typography.kv
+
+#: import Buttons components.buttons
+#: include components/buttons.kv
+
+
+<Footer>:
+    size_hint: 1, .15
+    md_bg_color: app.theme.STALE_BLUE
+    padding: 15
+    spacing: 20
+
+    MDBoxLayout:
+        size_hint: .25, 1
+        orientation: 'vertical'
+
+        MonoLabel:
+            text: '00:00:00'
+
+        MonoLabel:
+            text: '00-00-00'
+
+    MDBoxLayout:
+        size_hint: .5, 1
+        spacing: 20
+
+        TextIconButton:
+            text: root.left_label
+            icon: root.left_icon
+            on_release: root.left_action()
+
+        TextIconButton:
+            text: root.right_label
+            icon: root.right_icon
+            on_release: root.right_action()
+
+    MDBoxLayout:
+        size_hint: .25, 1
+
+        MonoLabel:
+            text: 'SIET1010'

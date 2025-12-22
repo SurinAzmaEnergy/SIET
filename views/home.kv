@@ -1,0 +1,118 @@
+#: kivy 2.3.1
+
+#: import Footer components.footer
+#: include components/footer.kv
+
+
+<Home>:
+    name: 'home'
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDBoxLayout:
+            size_hint: 1, .3
+            orientation: 'vertical'
+            md_bg_color: app.theme.STALE_BLUE
+            padding: 0, 25
+
+            MonoLabel:
+                id: first_peak
+
+            MonoLabel:
+                id: second_peak
+
+            MonoLabel:
+                id: third_peak
+
+        MDBoxLayout:
+            size_hint: 1, .55
+            orientation: 'vertical'
+            md_bg_color: app.theme.STALE_GRAY
+            spacing: 25
+            padding: 20
+
+            MDBoxLayout:
+                size_hint: 1, .69
+                spacing: 25
+
+                MDBoxLayout:
+                    size_hint: .5, 1
+
+                    MDCard:
+                        style: 'outlined'
+                        orientation: 'vertical'
+                        padding: 20, 20, 20, 15
+
+                        MDBoxLayout:
+                            size_hint: 1, .3
+                            padding: 10
+                            radius: 5
+                            md_bg_color: app.theme.STALE_BLUE
+
+                            MonoLabel:
+                                text: 'STATUS'
+
+                        MDBoxLayout:
+                            size_hint: 1, .7
+
+                            MonoLabel:
+                                text: 'StandBy'
+                                halign: 'center'
+                                theme_font_size: 'Custom'
+                                font_size: 35
+                                color: app.theme.VOID_BLACK
+
+                MDBoxLayout:
+                    size_hint: .5, 1
+                    spacing: 25
+                    orientation: 'vertical'
+
+                    TextIconButton:
+                        size_hint: 1, .5
+                        text: 'Start'
+                        icon: 'microphone-outline'
+                        font_size: 30
+
+                    TextIconButton:
+                        size_hint: 1, .5
+                        text: 'E/G Modulus Calculation'
+                        icon: 'math-compass'
+
+            MDDivider:
+                size_hint_x: .5
+                pos_hint: {'center_x': .5, 'center_y': .5}
+
+            MDBoxLayout:
+                size_hint: 1, .31
+                spacing: 25
+
+                TextIconButton:
+                    size_hint: .25, 1
+                    text: 'Archive'
+                    icon: 'archive-outline'
+
+                TextIconButton:
+                    size_hint: .25, 1
+                    text: 'Show FFT'
+                    icon: 'poll'
+
+                TextIconButton:
+                    size_hint: .25, 1
+                    size_hint: .25, 1
+                    text: 'Show Wave'
+                    icon: 'waveform'
+
+                TextIconButton:
+                    size_hint: .25, 1
+                    size_hint: .25, 1
+                    text: 'Serial Test'
+                    icon: 'format-list-bulleted'
+
+        Footer:
+            left_label: 'Reboot'
+            left_icon: 'refresh'
+            left_action: lambda: print('Reboot!')
+            right_label: 'Settings'
+            right_icon: 'cog-outline'
+            right_action: lambda: print('Settings!')
