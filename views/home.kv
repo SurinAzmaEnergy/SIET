@@ -91,6 +91,13 @@
                     size_hint: .25, 1
                     text: 'Archive'
                     icon: 'archive-outline'
+                    on_release: root.manager.navigate('archive')
+
+                TextIconButton:
+                    size_hint: .25, 1
+                    size_hint: .25, 1
+                    text: 'QC Test'
+                    icon: 'format-list-bulleted'
 
                 TextIconButton:
                     size_hint: .25, 1
@@ -103,11 +110,6 @@
                     text: 'Show Wave'
                     icon: 'waveform'
 
-                TextIconButton:
-                    size_hint: .25, 1
-                    size_hint: .25, 1
-                    text: 'Serial Test'
-                    icon: 'format-list-bulleted'
 
         Footer:
             left_label: 'Reboot'
@@ -115,4 +117,4 @@
             left_action: lambda: print('Reboot!')
             right_label: 'Settings'
             right_icon: 'cog-outline'
-            right_action: lambda: print('Settings!')
+            right_action: lambda: root.manager.navigate('general_settings')

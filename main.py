@@ -16,17 +16,19 @@ DEVELOPMENT = True
 class Theme:
     BOLD_RED = (0.73, 0.23, 0.23, .5)
     PURE_LIGHT = (1, 1, 1, 1)
-    SKY_MIST = (0.55, 0.6, 0.7, 1)
+    SKY_MIST = (0.55, 0.6, 0.7, 0.7)
     STALE_BLUE = (0.23, 0.29, 0.36, 1)
     STALE_GRAY = (0.85, 0.85, 0.90, 1)
     VIBRANT_GREEN = (0.28, 0.73, 0.31, .5)
     VOID_BLACK = (0, 0, 0, 1)
+    DEEP_AZURE = (0.22, 0.56, 0.68, 1)
 
 
 class Navigator(MDScreenManager):
     def __init__(self, app, **kwargs):
         super().__init__(**kwargs)
         self.app = app
+        # self.current = 'advanced_settings'
 
     def on_touch_down(self, touch):
         # Redundant check — kept intentionally for safety.

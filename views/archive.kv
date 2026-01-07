@@ -4,3 +4,94 @@
 <Archive>:
     name: 'archive'
     md_bg_color: self.theme_cls.backgroundColor
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDBoxLayout:
+            size_hint: 1, .1
+            md_bg_color: app.theme.STALE_BLUE
+            padding: 20, 10
+            spacing: 15
+
+            IconButton:
+                icon: 'arrow-left'
+
+            MonoLabel:
+                size_hint: .8, 1
+                text: 'current/working/directory'
+                font_size: 20
+
+            IconButton:
+                icon: 'refresh'
+
+        MDBoxLayout:
+            size_hint: 1, .75
+            md_bg_color: app.theme.STALE_GRAY
+
+            MDBoxLayout:
+                size_hint: .8, 1
+                padding: 10
+
+            MDBoxLayout:
+                size_hint: .2, 1
+                orientation: 'vertical'
+                padding: 15, 20
+                spacing: 10
+
+                TextIconButton:
+                    size_hint: 1, .14
+                    text: 'New Folder'
+                    icon: 'folder-plus'
+                    text_font_size: 20
+                    icon_font_size: 20
+
+                TextIconButton:
+                    size_hint: 1, .14
+                    text: 'Import'
+                    icon: 'open-in-new'
+                    text_font_size: 20
+                    icon_font_size: 20
+
+                TextIconButton:
+                    size_hint: 1, .14
+                    text: 'Rename'
+                    icon: 'pencil'
+                    text_font_size: 20
+                    icon_font_size: 20
+
+                TextIconButton:
+                    size_hint: 1, .14
+                    text: 'Set Default'
+                    icon: 'star'
+                    text_font_size: 20
+                    icon_font_size: 20
+
+                TextIconButton:
+                    size_hint: 1, .14
+                    text: 'Delete'
+                    icon: 'delete'
+                    text_font_size: 20
+                    icon_font_size: 20
+
+                TextIconButton:
+                    size_hint: 1, .14
+                    text: 'Select All'
+                    icon: 'select'
+                    text_font_size: 20
+                    icon_font_size: 20
+
+                TextIconButton:
+                    size_hint: 1, .14
+                    text: 'Deselect All'
+                    icon: 'select-off'
+                    text_font_size: 20
+                    icon_font_size: 20
+
+        Footer:
+            left_label: 'Back to Home'
+            left_icon: 'home-export-outline'
+            left_action: lambda: root.manager.navigate('home')
+            right_label: 'Copy to USB'
+            right_icon: 'usb-flash-drive-outline'
+            right_action: lambda: print('Copied!')

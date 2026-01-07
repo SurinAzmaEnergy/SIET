@@ -17,12 +17,22 @@
         x: text.x - (self.width + dp(10))
         color: app.theme.VOID_BLACK
         theme_font_size: "Custom"
-        font_size: 25
+        font_size: root.icon_font_size
 
     MDButtonText:
         id: text
         text: root.text
-        pos_hint: {"center_x": .55, "center_y": .5}
+        pos_hint: {"center_x": .57, "center_y": .5}
         color: app.theme.VOID_BLACK
         theme_font_size: "Custom"
-        font_size: 25
+        font_size: root.text_font_size
+
+
+<IconButton>:
+    style: 'outlined'
+    icon: root.icon
+    theme_bg_color: 'Custom'
+    md_bg_color: app.theme.PURE_LIGHT
+    line_width: 1.3
+    theme_line_color: 'Custom'
+    line_color: app.theme.VOID_BLACK

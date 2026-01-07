@@ -1,0 +1,502 @@
+#: kivy 2.3.1
+
+
+<GeneralSettings>:
+    name: 'general_settings'
+    md_bg_color: self.theme_cls.backgroundColor
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDBoxLayout:
+            size_hint: 1, .1
+            md_bg_color: app.theme.STALE_BLUE
+
+            MonoLabel:
+                text: 'General Settings'
+
+        MDBoxLayout:
+            size_hint: 1, .75
+            md_bg_color: app.theme.STALE_GRAY
+
+            MDBoxLayout:
+                size_hint: .8, 1
+                orientation: 'vertical'
+                padding: 10
+                spacing: 10
+
+                MDBoxLayout:
+                    size_hint: 1, .5
+                    orientation: 'vertical'
+                    md_bg_color: app.theme.PURE_LIGHT
+                    radius: 10
+
+                    MDBoxLayout:
+                        size_hint: 1, .2
+                        md_bg_color: app.theme.SKY_MIST
+                        radius: 10, 10, 0, 0
+                        padding: 20, 0
+
+                        MonoLabel:
+                            text: 'Date and Time'
+                            text_size: self.size
+                            halign: 'left'
+                            valign: 'center'
+                            color: app.theme.VOID_BLACK
+                            theme_font_size: 'Custom'
+                            font_size: 20
+
+                    MDBoxLayout:
+                        size_hint: 1, .8
+
+                        MDBoxLayout:
+                            size_hint: .5, 1
+                            orientation: 'vertical'
+                            padding: 20
+                            spacing: 20
+
+                            MDBoxLayout:
+                                size_hint: 1, .4
+
+                                MonoLabel:
+                                    text: '00:00:00'
+                                    color: app.theme.VOID_BLACK
+
+                            MDBoxLayout:
+                                size_hint: 1, .6
+
+                                TextIconButton:
+                                    text: 'Set Time'
+                                    icon: 'clock-time-eight-outline'
+
+                        MDDivider:
+                            size_hint_y: 1
+                            orientation: 'vertical'
+                            pos_hint: {'center_x': .5, 'center_y': .5}
+
+                        MDBoxLayout:
+                            size_hint: .5, 1
+                            orientation: 'vertical'
+                            padding: 20
+                            spacing: 20
+
+                            MDBoxLayout:
+                                size_hint: 1, .4
+
+                                MonoLabel:
+                                    text: '0000-00-00'
+                                    color: app.theme.VOID_BLACK
+
+                            MDBoxLayout:
+                                size_hint: 1, .6
+
+                                TextIconButton:
+                                    text: 'Set Date'
+                                    icon: 'calendar-range'
+
+                MDBoxLayout:
+                    size_hint: 1, .5
+                    orientation: 'vertical'
+                    md_bg_color: app.theme.PURE_LIGHT
+                    radius: 10
+
+                    MDBoxLayout:
+                        size_hint: 1, .2
+                        md_bg_color: app.theme.SKY_MIST
+                        radius: 10, 10, 0, 0
+                        padding: 20, 0
+
+                        MonoLabel:
+                            text: 'Filter Selection'
+                            text_size: self.size
+                            halign: 'left'
+                            valign: 'center'
+                            color: app.theme.VOID_BLACK
+                            theme_font_size: 'Custom'
+                            font_size: 20
+
+                        MDSwitch:
+                            id: all_pass_switch
+                            on_active: root.toggle_all_pass(self.active)
+                            pos_hint: {'center_x': .5, 'center_y': .5}
+                            icon_active: "check"
+                            icon_inactive: "close"
+                            icon_active_color: app.theme.PURE_LIGHT
+                            icon_inactive_color: app.theme.PURE_LIGHT
+                            thumb_color_active: app.theme.STALE_BLUE
+                            thumb_color_inactive: app.theme.STALE_BLUE
+                            track_color_active: app.theme.STALE_GRAY
+                            track_color_inactive: app.theme.STALE_GRAY
+
+                    MDBoxLayout:
+                        size_hint: 1, .8
+
+                        MDBoxLayout:
+                            size_hint: .5, 1
+                            orientation: 'vertical'
+                            padding: 10
+
+                            MonoLabel:
+                                id: low_freq_label
+                                size_hint: 1, .6
+                                color: app.theme.VOID_BLACK
+                                theme_font_size: 'Custom'
+                                font_size: 18
+
+                            Slider:
+                                id: low_freq_slider
+                                size_hint: 1, .2
+                                on_value: root.display_frequency('low_freq_label', self.value)
+                                value_track: True
+                                value_track_color: app.theme.DEEP_AZURE
+                                step: .02
+                                min: 0.02
+
+                            MDBoxLayout:
+                                size_hint: 1, .2
+                                padding: 10, 0
+
+                                MonoLabel:
+                                    text: 'Min: 0.02 kHz'
+                                    color: app.theme.VOID_BLACK
+                                    text_size: self.size
+                                    halign: 'left'
+                                    valign: 'center'
+                                    theme_font_size: 'Custom'
+                                    font_size: 15
+
+                                MonoLabel:
+                                    id: low_max_label
+                                    color: app.theme.VOID_BLACK
+                                    text_size: self.size
+                                    halign: 'right'
+                                    valign: 'center'
+                                    theme_font_size: 'Custom'
+                                    font_size: 15
+
+                        MDDivider:
+                            size_hint_y: 1
+                            orientation: 'vertical'
+                            pos_hint: {'center_x': .5, 'center_y': .5}
+
+                        MDBoxLayout:
+                            size_hint: .5, 1
+                            orientation: 'vertical'
+                            padding: 10
+
+                            MonoLabel:
+                                id: high_freq_label
+                                size_hint: 1, .6
+                                color: app.theme.VOID_BLACK
+                                theme_font_size: 'Custom'
+                                font_size: 18
+
+                            Slider:
+                                id: high_freq_slider
+                                on_value: root.display_frequency('high_freq_label', self.value)
+                                size_hint: 1, .2
+                                value_track: True
+                                value_track_color: app.theme.DEEP_AZURE
+                                step: .02
+                                max: 23
+
+                            MDBoxLayout:
+                                size_hint: 1, .2
+                                padding: 10, 0
+
+                                MonoLabel:
+                                    id: high_min_label
+                                    color: app.theme.VOID_BLACK
+                                    text_size: self.size
+                                    halign: 'left'
+                                    valign: 'center'
+                                    theme_font_size: 'Custom'
+                                    font_size: 15
+
+                                MonoLabel:
+                                    text: 'Max: 24 kHz'
+                                    color: app.theme.VOID_BLACK
+                                    text_size: self.size
+                                    halign: 'right'
+                                    valign: 'center'
+                                    theme_font_size: 'Custom'
+                                    font_size: 15
+
+            MDDivider:
+                size_hint_y: .8
+                orientation: 'vertical'
+                pos_hint: {'center_x': .5, 'center_y': .5}
+
+            MDBoxLayout:
+                size_hint: .2, 1
+                orientation: 'vertical'
+                padding: 10
+                spacing: 10
+
+                MDBoxLayout:
+                    size_hint: 1, .6
+
+                TextIconButton:
+                    text: 'Reset'
+                    icon: 'cog-sync'
+                    size_hint: 1, .15
+                    text_font_size: 20
+                    icon_font_size: 20
+
+                TextIconButton:
+                    text: 'Advanced'
+                    icon: 'tune'
+                    size_hint: 1, .15
+                    text_font_size: 20
+                    icon_font_size: 20
+                    on_release: root.manager.navigate('advanced_settings')
+
+        Footer:
+            left_label: 'Back'
+            left_icon: 'arrow-up-left'
+            left_action: lambda: root.manager.navigate('home')
+            right_label: 'Save'
+            right_icon: 'content-save-cog-outline'
+            right_action: lambda: print('Save!')
+
+
+<AdvancedSettings>:
+    name: 'advanced_settings'
+    md_bg_color: self.theme_cls.backgroundColor
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDBoxLayout:
+            size_hint: 1, .1
+            md_bg_color: app.theme.STALE_BLUE
+
+            MonoLabel:
+                text: 'Advanced Settings'
+
+        MDBoxLayout:
+            size_hint: 1, .75
+            md_bg_color: app.theme.STALE_GRAY
+
+            MDBoxLayout:
+                size_hint: .8, 1
+                orientation: 'vertical'
+                padding: 10
+                spacing: 10
+
+                MDBoxLayout:
+                    size_hint: 1, .33
+                    orientation: 'vertical'
+                    md_bg_color: app.theme.PURE_LIGHT
+                    radius: 10
+
+                    MDBoxLayout:
+                        size_hint: 1, .4
+                        md_bg_color: app.theme.SKY_MIST
+                        radius: 10, 10, 0, 0
+                        padding: 20, 0
+
+                        MonoLabel:
+                            id: resolution_label
+                            text_size: self.size
+                            halign: 'center'
+                            valign: 'center'
+                            color: app.theme.VOID_BLACK
+                            theme_font_size: 'Custom'
+                            font_size: 25
+
+                    MDBoxLayout:
+                        size_hint: 1, .6
+                        orientation: 'vertical'
+                        padding: 10, 7
+
+                        MDBoxLayout:
+                            size_hint: 1, .6
+
+                            Slider:
+                                id: resolution_slider
+                                value_track: True
+                                value_track_color: app.theme.DEEP_AZURE
+                                on_value: root.display_advanced_label('resolution_label', self.value)
+                                min: .1
+                                max: 10
+                                step: .1
+
+                        MDBoxLayout:
+                            size_hint: 1, .4
+                            padding: 10, 0
+
+                            MonoLabel:
+                                text: 'Min: 0.1 Hz'
+                                color: app.theme.VOID_BLACK
+                                text_size: self.size
+                                halign: 'left'
+                                valign: 'center'
+                                theme_font_size: 'Custom'
+                                font_size: 18
+
+                            MonoLabel:
+                                text: 'Min: 10.0 Hz'
+                                color: app.theme.VOID_BLACK
+                                text_size: self.size
+                                halign: 'right'
+                                valign: 'center'
+                                theme_font_size: 'Custom'
+                                font_size: 18
+
+                MDBoxLayout:
+                    size_hint: 1, .33
+                    orientation: 'vertical'
+                    md_bg_color: app.theme.PURE_LIGHT
+                    radius: 10
+
+                    MDBoxLayout:
+                        size_hint: 1, .4
+                        md_bg_color: app.theme.SKY_MIST
+                        radius: 10, 10, 0, 0
+                        padding: 20, 0
+
+                        MonoLabel:
+                            id: sensitivity_label
+                            text_size: self.size
+                            halign: 'center'
+                            valign: 'center'
+                            color: app.theme.VOID_BLACK
+                            theme_font_size: 'Custom'
+                            font_size: 25
+
+                    MDBoxLayout:
+                        size_hint: 1, .6
+                        orientation: 'vertical'
+                        padding: 10, 7
+
+                        MDBoxLayout:
+                            size_hint: 1, .6
+
+                            Slider:
+                                id: sensitivity_slider
+                                value_track: True
+                                value_track_color: app.theme.DEEP_AZURE
+                                on_value: root.display_advanced_label('sensitivity_label', self.value)
+                                min: 1
+                                max: 5
+                                step: .1
+
+                        MDBoxLayout:
+                            size_hint: 1, .4
+                            padding: 10, 0
+
+                            MonoLabel:
+                                text: 'Min: 1.0'
+                                color: app.theme.VOID_BLACK
+                                text_size: self.size
+                                halign: 'left'
+                                valign: 'center'
+                                theme_font_size: 'Custom'
+                                font_size: 18
+
+                            MonoLabel:
+                                text: 'Min: 5.0'
+                                color: app.theme.VOID_BLACK
+                                text_size: self.size
+                                halign: 'right'
+                                valign: 'center'
+                                theme_font_size: 'Custom'
+                                font_size: 18
+
+                MDBoxLayout:
+                    size_hint: 1, .33
+                    orientation: 'vertical'
+                    md_bg_color: app.theme.PURE_LIGHT
+                    radius: 10
+
+                    MDBoxLayout:
+                        size_hint: 1, .4
+                        md_bg_color: app.theme.SKY_MIST
+                        radius: 10, 10, 0, 0
+                        padding: 20, 0
+
+                        MonoLabel:
+                            id: distance_label
+                            text_size: self.size
+                            halign: 'center'
+                            valign: 'center'
+                            color: app.theme.VOID_BLACK
+                            theme_font_size: 'Custom'
+                            font_size: 25
+
+                    MDBoxLayout:
+                        size_hint: 1, .6
+                        orientation: 'vertical'
+                        padding: 10, 7
+
+                        MDBoxLayout:
+                            size_hint: 1, .6
+
+                            Slider:
+                                id: distance_slider
+                                value_track: True
+                                value_track_color: app.theme.DEEP_AZURE
+                                on_value: root.display_advanced_label('distance_label', self.value)
+                                min: 0
+                                max: 300
+                                step: 1
+
+                        MDBoxLayout:
+                            size_hint: 1, .4
+                            padding: 10, 0
+
+                            MonoLabel:
+                                text: 'Min: 0 kHz'
+                                color: app.theme.VOID_BLACK
+                                text_size: self.size
+                                halign: 'left'
+                                valign: 'center'
+                                theme_font_size: 'Custom'
+                                font_size: 18
+
+                            MonoLabel:
+                                text: 'Min: 300 kHz'
+                                color: app.theme.VOID_BLACK
+                                text_size: self.size
+                                halign: 'right'
+                                valign: 'center'
+                                theme_font_size: 'Custom'
+                                font_size: 18
+
+            MDDivider:
+                size_hint_y: .8
+                orientation: 'vertical'
+                pos_hint: {'center_x': .5, 'center_y': .5}
+
+            MDBoxLayout:
+                size_hint: .2, 1
+                orientation: 'vertical'
+                padding: 10
+                spacing: 10
+
+                MDBoxLayout:
+                    size_hint: 1, .6
+
+                TextIconButton:
+                    text: 'Reset'
+                    icon: 'cog-sync'
+                    size_hint: 1, .15
+                    text_font_size: 20
+                    icon_font_size: 20
+
+                TextIconButton:
+                    text: 'Update'
+                    icon: 'update'
+                    size_hint: 1, .15
+                    text_font_size: 20
+                    icon_font_size: 20
+
+
+        Footer:
+            left_label: 'Back'
+            left_icon: 'arrow-up-left'
+            left_action: lambda: root.manager.navigate('general_settings')
+            right_label: 'Save'
+            right_icon: 'content-save-cog-outline'
+            right_action: lambda: print('Save!')
