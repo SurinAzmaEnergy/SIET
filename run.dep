@@ -1,0 +1,9 @@
+#!/bin/bash
+
+while true; do
+    cd /home/pi/SIET1010/
+    source venv/bin/activate
+    python main.py
+    exit_code=$?
+done
+

@@ -1,0 +1,158 @@
+#: kivy 2.3.0
+
+
+<ClaviusButton>:
+    type: 'large'
+    elevation: 0
+    size_hint: .33, 1
+    md_bg_color: app.PURE_LIGHT
+    line_color: app.VOID_BLACK
+    icon_color: app.VOID_BLACK
+    line_width: 1.5
+
+
+<Clavius>:
+    name: 'clavius'
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDBoxLayout:
+            size_hint: 1, .1
+            md_bg_color: .23, .29, .36, 1
+            padding: 20, 10
+            spacing: 15
+
+            MonoLabel:
+                id: main_peak
+                halign: 'left'
+
+            MDIconButton:
+                size_hint: .1, 1
+                icon: 'check'
+                md_bg_color: 1, 1, 1, 1
+                line_width: 1.3
+                line_color: 0, 0, 0, 1
+                on_release: root.save()
+
+        MDBoxLayout:
+            size_hint: 1, .75
+            md_bg_color: .86, .86, .88, 1
+
+            MDBoxLayout:
+                size_hint: .6, 1
+                orientation: 'vertical'
+
+                MDBoxLayout:
+                    orientation: 'vertical'
+
+                    MDBoxLayout:
+                        id: the_fucking_container
+                        size_hint: 1, .85
+
+                    MDSeparator
+
+                    MDBoxLayout:
+                        md_bg_color: app.STALE_BLUE
+                        size_hint: 1, .15
+                        padding: 10
+                        spacing: 10
+
+                        MDBoxLayout:
+                            spacing: 10
+
+                            MDFloatingActionButton:
+                                icon: 'arrow-left'
+                                type: 'large'
+                                elevation: 0
+                                size_hint: None, 1
+                                md_bg_color: app.PURE_LIGHT
+                                line_color: app.VOID_BLACK
+                                icon_color: app.VOID_BLACK
+                                line_width: 1.5
+                                on_release: root.switch_tab('prev')
+
+                            MDFloatingActionButton:
+                                icon: 'arrow-right'
+                                type: 'large'
+                                elevation: 0
+                                size_hint: None, 1
+                                md_bg_color: app.PURE_LIGHT
+                                line_color: app.VOID_BLACK
+                                icon_color: app.VOID_BLACK
+                                line_width: 1.5
+                                on_release: root.switch_tab('next')
+
+            MDSeparator:
+                orientation: 'vertical'
+
+            MDBoxLayout:
+                size_hint: .4, 1
+                orientation: 'vertical'
+                spacing: 20
+                padding: 20
+
+                # Row 1 (1, 2, 3)
+                MDBoxLayout:
+                    spacing: 20
+
+                    ClaviusButton:
+                        key: '1'
+                        icon: 'numeric-1'
+
+                    ClaviusButton
+                        key: '2'
+                        icon: 'numeric-2'
+
+                    ClaviusButton
+                        key: '3'
+                        icon: 'numeric-3'
+
+                # Row 2 (4, 5, 6)
+                MDBoxLayout:
+                    spacing: 20
+
+                    ClaviusButton:
+                        key: '4'
+                        icon: 'numeric-4'
+
+                    ClaviusButton
+                        key: '5'
+                        icon: 'numeric-5'
+
+                    ClaviusButton
+                        key: '6'
+                        icon: 'numeric-6'
+
+                # Row 3 (7, 8, 9)
+                MDBoxLayout:
+                    spacing: 20
+
+                    ClaviusButton:
+                        key: '7'
+                        icon: 'numeric-7'
+
+                    ClaviusButton
+                        key: '8'
+                        icon: 'numeric-8'
+
+                    ClaviusButton
+                        key: '9'
+                        icon: 'numeric-9'
+
+                # Row 4 (0, Dot, Clear)
+                MDBoxLayout:
+                    spacing: 20
+
+                    ClaviusButton:
+                        key: '.'
+                        icon: 'circle-small'
+
+                    ClaviusButton
+                        key: '0'
+                        icon: 'numeric-0'
+
+                    ClaviusButton
+                        key: 'backspace'
+                        icon: 'keyboard-backspace'
+

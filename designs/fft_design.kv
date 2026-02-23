@@ -1,0 +1,81 @@
+#: kivy 2.3.1
+
+
+<FFTScreen>:
+    name: 'fft'
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDBoxLayout:
+            size_hint: 1, .1
+            md_bg_color: app.STALE_BLUE
+            padding: 20, 0
+
+            MonoLabel:
+                text: 'FFT Analysis'
+                halign: 'left'
+
+        MDBoxLayout:
+            size_hint: 1, .75
+            md_bg_color: app.STALE_GRAY
+
+            MDBoxLayout:
+                size_hint: .9, 1
+                padding: 15
+                md_bg_color: app.STALE_GRAY
+
+                MDCard:
+                    size_hint: 1, 1
+                    padding: 15
+
+                    MatplotFigure:
+                        id: fft_widget
+                        size_hint: 1, 1
+
+            MDBoxLayout:
+                size_hint: .1, 1
+                orientation: 'vertical'
+                padding: 10, 90
+                spacing: 15
+
+                IconButton:
+                    size_hint: 1, .33
+                    icon: 'home-outline'
+                    on_release:
+                        root.manager.current_screen.ids.fft_widget.home()
+
+                MDSeparator
+
+                IconButton:
+                    id: fft_pan_btn
+                    size_hint: 1, .33
+                    icon: 'arrow-all'
+                    md_bg_color: app.STALE_BLUE
+                    icon_color: app.PURE_LIGHT
+                    on_release:
+                        root.manager.current_screen.ids.fft_widget.touch_mode = 'pan'
+                        root.ids.fft_zoom_btn.md_bg_color = app.PURE_LIGHT
+                        root.ids.fft_zoom_btn.icon_color = app.VOID_BLACK
+                        self.md_bg_color = app.STALE_BLUE
+                        self.icon_color = app.PURE_LIGHT
+
+                IconButton:
+                    id: fft_zoom_btn
+                    size_hint: 1, .33
+                    icon: 'select-search'
+                    on_release:
+                        root.manager.current_screen.ids.fft_widget.touch_mode = 'zoombox'
+                        root.ids.fft_pan_btn.md_bg_color = app.PURE_LIGHT
+                        root.ids.fft_pan_btn.icon_color = app.VOID_BLACK
+                        self.md_bg_color = app.STALE_BLUE
+                        self.icon_color = app.PURE_LIGHT
+
+        Panel:
+            left_icon: 'arrow-left'
+            left_label: 'Back'
+            left_action: lambda: root.manager.back('right')
+            right_icon: 'tray-arrow-down'
+            right_label: 'Save'
+            right_action: root.open_save_dialog
+

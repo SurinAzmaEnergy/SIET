@@ -1,0 +1,117 @@
+#: kivy 2.3.1
+
+
+<ArchiveScreen>:
+    name: 'archive'
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDBoxLayout:
+            size_hint: 1, .1
+            md_bg_color: app.STALE_BLUE
+            padding: 20, 10
+            spacing: 15
+
+            MDIconButton:
+                size_hint: .1, 1
+                icon: 'arrow-left'
+                md_bg_color: 1, 1, 1, 1
+                line_width: 1.3
+                line_color: 0, 0, 0, 1
+                on_release: root.back()
+
+            MonoLabel:
+                size_hint: .8, 1
+                id: breadcrumb
+
+            MDIconButton:
+                size_hint: .1, 1
+                icon: 'refresh'
+                md_bg_color: 1, 1, 1, 1
+                line_width: 1.3
+                line_color: 0, 0, 0, 1
+                on_release: root.refresh()
+
+        MDBoxLayout:
+            size_hint: 1, .75
+            md_bg_color: app.STALE_GRAY
+
+            MDBoxLayout:
+                id: data_table
+                size_hint: .8, 1
+                padding: 10
+
+            MDBoxLayout:
+                size_hint: .2, 1
+                orientation: 'vertical'
+                padding: 15, 20
+                spacing: 10
+
+                PrimaryButton:
+                    id: new_folder_button
+                    size_hint: 1, .14
+                    text: 'New Folder'
+                    icon: 'folder-plus'
+                    font_size: 21
+                    on_release: root.show_create_directory_dialog()
+
+                PrimaryButton:
+                    id: import_button
+                    size_hint: 1, .14
+                    text: 'Import'
+                    icon: 'open-in-new'
+                    font_size: 21
+                    on_release: root.import_wave()
+
+                PrimaryButton:
+                    id: rename_button
+                    size_hint: 1, .14
+                    text: 'Rename'
+                    icon: 'pencil'
+                    font_size: 21
+                    on_release: root.show_rename_dialog()
+
+                PrimaryButton:
+                    id: set_default_button
+                    size_hint: 1, .14
+                    text: 'Set Default'
+                    icon: 'star'
+                    font_size: 21
+                    on_release: root.show_set_default_dialog()
+
+                PrimaryButton:
+                    id: delete_button
+                    size_hint: 1, .14
+                    text: 'Delete'
+                    icon: 'delete'
+                    font_size: 21
+                    on_release: root.show_delete_dialog()
+
+                MDSeparator
+
+                PrimaryButton:
+                    id: select_all_button
+                    size_hint: 1, .14
+                    text: 'Select All'
+                    icon: 'select'
+                    font_size: 21
+                    on_release: root.table.table_data.select_all('down')
+
+                PrimaryButton:
+                    id: deselect_all_button
+                    size_hint: 1, .14
+                    text: 'Deselect All'
+                    icon: 'select-off'
+                    font_size: 21
+                    on_release: root.table.table_data.select_all('normal')
+
+        Panel:
+            id: archive_panel
+            left_label: 'Back to Home'
+            left_icon: 'arrow-right'
+            left_action: lambda: root.manager.back('left')
+            right_label: 'Copy to USB'
+            right_icon: 'content-copy'
+            right_action: root.show_copy_on_usb_dialog
+

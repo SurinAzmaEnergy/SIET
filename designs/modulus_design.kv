@@ -1,0 +1,663 @@
+#: kivy 2.3.0
+
+
+<ModulusScreen>:
+    name: 'modulus'
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDBoxLayout:
+            size_hint: 1, .1
+            md_bg_color: app.STALE_BLUE
+            padding: 20, 0
+
+            MonoLabel:
+                text: 'E/G Modulus Calculation'
+                halign: 'left'
+
+            MonoLabel:
+                id: main_peak
+                halign: 'right'
+
+        MDBoxLayout:
+            size_hint: 1, .75
+            md_bg_color: app.STALE_GRAY
+
+            TabContainer:
+                id: tab_container
+                background_color: app.STALE_BLUE
+                screen: root
+
+                Tab:
+                    title: 'BAR'
+                    icon: 'format-list-bulleted'
+
+                    MDBoxLayout:
+
+                        MDBoxLayout:
+                            orientation: 'vertical'
+                            size_hint: .45, 1
+
+                            MDLabel:
+                                text: 'Input Panel'
+                                size_hint: 1, None
+                                height: 35
+                                padding: 15, 0
+                                md_bg_color: app.SKY_MIST
+
+                            MDBoxLayout:
+                                orientation: 'vertical'
+                                padding: 10
+
+                                EntryBox:
+                                    id: bar_length
+                                    label: 'Length ='
+                                    unit: 'mm'
+                                    dialog_title: f'Length ({self.unit}):'
+                                    lower_limit: 0
+                                    upper_limit: 10000
+
+                                EntryBox:
+                                    id: bar_width
+                                    label: 'Width ='
+                                    unit: 'mm'
+                                    dialog_title: f'Width ({self.unit}):'
+                                    lower_limit: 0
+                                    upper_limit: 2000
+
+                                EntryBox:
+                                    id: bar_thickness
+                                    label: 'Thickness ='
+                                    unit: 'mm'
+                                    dialog_title: f'Thickness ({self.unit}):'
+                                    lower_limit: 0
+                                    upper_limit: 1000
+
+                                EntryBox:
+                                    id: bar_mass
+                                    label: 'Mass ='
+                                    unit: 'g'
+                                    dialog_title: f'Mass ({self.unit}):'
+                                    lower_limit: 0
+                                    upper_limit: 20000
+
+                                EntryBox:
+                                    id: bar_flexural_frequency
+                                    label: 'Flexural Frequency ='
+                                    unit: 'kHz'
+                                    dialog_title: f'Flexural Frequency ({self.unit}):'
+                                    lower_limit: 0
+                                    upper_limit: 48
+
+                                EntryBox:
+                                    id: bar_torsional_frequency
+                                    label: 'Torsional Frequency ='
+                                    unit: 'kHz'
+                                    dialog_title: f'Torsional Frequency ({self.unit}):'
+                                    lower_limit: 0
+                                    upper_limit: 48
+
+                                EntryBox:
+                                    id: bar_initial_poisson_ratio
+                                    label: 'Initial Poisson Ratio ='
+                                    unit: ''
+                                    dialog_title: 'Initial Poisson Ratio:'
+                                    lower_limit: 0
+                                    upper_limit: 1
+
+                        MDSeparator:
+                            orientation: 'vertical'
+
+                        MDBoxLayout:
+                            orientation: 'vertical'
+                            size_hint: .55, 1
+
+                            MDBoxLayout:
+                                orientation: 'vertical'
+                                size_hint: 1, .3
+
+                                MDLabel:
+                                    text: 'Measurement Type'
+                                    size_hint: 1, None
+                                    height: 35
+                                    padding: 15, 0
+                                    md_bg_color: app.SKY_MIST
+
+                                MDBoxLayout:
+                                    size_hint: 1, 1
+                                    padding: 15
+                                    spacing: 20
+
+                                    ChoiceButton:
+                                        id: poisson_bar_choice
+                                        text: 'Poisson'
+                                        group: 'measurement_type'
+                                        icon: 'checkbox-marked-circle-outline' if self.state == 'down' else 'circle-outline'
+                                        on_release: root.change_bar_choice()
+
+                                    ChoiceButton:
+                                        id: flexural_bar_choice
+                                        text: 'Flexural'
+                                        group: 'measurement_type'
+                                        icon: 'checkbox-marked-circle-outline' if self.state == 'down' else 'circle-outline'
+                                        on_release: root.change_bar_choice()
+
+                                    ChoiceButton:
+                                        id: torsional_bar_choice
+                                        text: 'Torsional'
+                                        group: 'measurement_type'
+                                        icon: 'checkbox-marked-circle-outline' if self.state == 'down' else 'circle-outline'
+                                        on_release: root.change_bar_choice()
+
+                            MDSeparator:
+
+                            MDBoxLayout:
+                                orientation: 'vertical'
+                                size_hint: 1, .5
+
+                                MDLabel:
+                                    text: 'Output Panel'
+                                    size_hint: 1, None
+                                    height: 35
+                                    padding: 15, 0
+                                    md_bg_color: app.SKY_MIST
+
+                                MDBoxLayout:
+                                    size_hint: 1, .7
+                                    padding: 15
+                                    spacing: 20
+
+                                    MDBoxLayout:
+                                        orientation: 'vertical'
+
+                                        EntryBox:
+                                            id: bar_young_modulus_output
+                                            label: 'Young\'s Modulus ='
+                                            unit: 'GPa'
+                                            is_output: True
+
+                                        EntryBox:
+                                            id: bar_shear_modulus_output
+                                            label: 'Shear Modulus ='
+                                            unit: 'GPa'
+                                            is_output: True
+
+                                        EntryBox:
+                                            id: bar_poisson_ratio_output
+                                            label: 'Poisson Ratio ='
+                                            unit: ''
+                                            is_output: True
+
+                            MDSeparator
+
+                            MDBoxLayout:
+                                size_hint: 1, .2
+                                padding: 15
+                                spacing: 20
+
+                                PrimaryButton:
+                                    id: bar_reset_btn
+                                    size_hint: .5, 1
+                                    text: 'Reset'
+                                    icon: 'cached'
+                                    on_release: root.reset()
+
+                                PrimaryButton:
+                                    id: bar_calculation_btn
+                                    size_hint: .5, 1
+                                    text: 'Calculate'
+                                    icon: 'function'
+                                    on_release: root.bar_calculation()
+
+                Tab:
+                    title: 'ROD'
+                    icon: 'format-list-bulleted'
+
+                    MDBoxLayout:
+
+                        MDBoxLayout:
+                            size_hint: .45, 1
+                            orientation: 'vertical'
+
+                            MDLabel:
+                                text: 'Input Panel'
+                                size_hint: 1, None
+                                height: 35
+                                padding: 15, 0
+                                md_bg_color: app.SKY_MIST
+
+                            MDBoxLayout:
+                                orientation: 'vertical'
+                                padding: 10
+
+                                EntryBox:
+                                    id: rod_length
+                                    label: 'Length ='
+                                    unit: 'mm'
+                                    dialog_title: f'Length ({self.unit}):'
+                                    lower_limit: 0
+                                    upper_limit: 10000
+
+                                EntryBox:
+                                    id: rod_diameter
+                                    label: 'Diameter ='
+                                    unit: 'mm'
+                                    dialog_title: f'Diameter ({self.unit}):'
+                                    lower_limit: 0
+                                    upper_limit: 1e10
+
+                                EntryBox:
+                                    id: rod_mass
+                                    label: 'Mass ='
+                                    unit: 'g'
+                                    dialog_title: f'Mass ({self.unit}):'
+                                    lower_limit: 0
+                                    upper_limit: 20000
+
+                                EntryBox:
+                                    id: rod_flexural_frequency
+                                    label: 'Flexural Frequency ='
+                                    unit: 'kHz'
+                                    dialog_title: f'Flexural Frequency ({self.unit}):'
+                                    lower_limit: 0
+                                    upper_limit: 48
+
+                                EntryBox:
+                                    id: rod_torsional_frequency
+                                    label: 'Torsional Frequency ='
+                                    unit: 'kHz'
+                                    dialog_title: f'Torsional Frequency ({self.unit}):'
+                                    lower_limit: 0
+                                    upper_limit: 48
+
+                                EntryBox:
+                                    id: rod_initial_poisson_ratio
+                                    label: 'Initial Poisson Ratio ='
+                                    unit: ''
+                                    dialog_title: 'Initial Poisson Ratio:'
+                                    lower_limit: 0
+                                    upper_limit: 1
+
+                        MDSeparator:
+                            orientation: 'vertical'
+
+                        MDBoxLayout:
+                            orientation: 'vertical'
+                            size_hint: .55, 1
+
+                            MDBoxLayout:
+                                orientation: 'vertical'
+                                size_hint: 1, .3
+
+                                MDLabel:
+                                    text: 'Measurement Type'
+                                    size_hint: 1, None
+                                    height: 35
+                                    padding: 15, 0
+                                    md_bg_color: app.SKY_MIST
+
+                                MDBoxLayout:
+                                    size_hint: 1, 1
+                                    padding: 15
+                                    spacing: 20
+
+                                    ChoiceButton:
+                                        id: poisson_rod_choice
+                                        text: 'Poisson'
+                                        group: 'measurement_type'
+                                        icon: 'checkbox-marked-circle-outline' if self.state == 'down' else 'circle-outline'
+                                        on_release: root.change_rod_choice()
+
+                                    ChoiceButton:
+                                        id: flexural_rod_choice
+                                        text: 'Flexural'
+                                        group: 'measurement_type'
+                                        icon: 'checkbox-marked-circle-outline' if self.state == 'down' else 'circle-outline'
+                                        on_release: root.change_rod_choice()
+
+                                    ChoiceButton:
+                                        id: torsional_rod_choice
+                                        text: 'Torsional'
+                                        group: 'measurement_type'
+                                        icon: 'checkbox-marked-circle-outline' if self.state == 'down' else 'circle-outline'
+                                        on_release: root.change_rod_choice()
+
+                            MDSeparator:
+
+                            MDBoxLayout:
+                                orientation: 'vertical'
+                                size_hint: 1, .5
+
+                                MDLabel:
+                                    text: 'Output Panel'
+                                    size_hint: 1, None
+                                    height: 35
+                                    padding: 15, 0
+                                    md_bg_color: app.SKY_MIST
+
+                                MDBoxLayout:
+                                    size_hint: 1, .7
+                                    padding: 15
+                                    spacing: 20
+
+                                    MDBoxLayout:
+                                        orientation: 'vertical'
+
+                                        EntryBox:
+                                            id: rod_young_modulus_output
+                                            label: 'Young\'s Modulus ='
+                                            unit: 'GPa'
+                                            is_output: True
+
+                                        EntryBox:
+                                            id: rod_shear_modulus_output
+                                            label: 'Shear Modulus ='
+                                            unit: 'GPa'
+                                            is_output: True
+
+                                        EntryBox:
+                                            id: rod_poisson_ratio_output
+                                            label: 'Poisson Ratio ='
+                                            unit: ''
+                                            is_output: True
+
+                            MDSeparator
+
+                            MDBoxLayout:
+                                size_hint: 1, .2
+                                padding: 15
+                                spacing: 20
+
+                                PrimaryButton:
+                                    id: rod_reset_btn
+                                    size_hint: .5, 1
+                                    text: 'Reset'
+                                    icon: 'cached'
+                                    on_release: root.reset()
+
+                                PrimaryButton:
+                                    id: rod_calculation_btn
+                                    size_hint: .5, 1
+                                    text: 'Calculate'
+                                    icon: 'function'
+                                    on_release: root.rod_calculation()
+
+                Tab:
+                    title: 'DISC'
+                    icon: 'format-list-bulleted'
+
+                    MDBoxLayout:
+
+                        MDBoxLayout:
+                            orientation: 'vertical'
+
+                            MDLabel:
+                                text: 'Input Panel'
+                                size_hint: 1, None
+                                height: 35
+                                padding: 15, 0
+                                md_bg_color: app.SKY_MIST
+
+                            MDBoxLayout:
+                                orientation: 'vertical'
+                                padding: 10
+
+                                EntryBox:
+                                    id: disc_diameter
+                                    label: 'Diameter ='
+                                    unit: 'mm'
+                                    dialog_title: f'Diameter ({self.unit}):'
+                                    lower_limit: 0
+                                    upper_limit: 10000
+
+                                EntryBox:
+                                    id: disc_thickness
+                                    label: 'Thickness ='
+                                    unit: 'mm'
+                                    dialog_title: f'Thickness ({self.unit}):'
+                                    lower_limit: 0
+                                    upper_limit: 1000
+
+                                EntryBox:
+                                    id: disc_mass
+                                    label: 'Mass ='
+                                    unit: 'g'
+                                    dialog_title: f'Mass ({self.unit}):'
+                                    lower_limit: 0
+                                    upper_limit: 20000
+
+                                EntryBox:
+                                    id: disc_first_frequency
+                                    label: 'First Frequency ='
+                                    unit: 'kHz'
+                                    dialog_title: f'First Frequency ({self.unit}):'
+                                    lower_limit: 0
+                                    upper_limit: 48
+
+                                EntryBox:
+                                    id: disc_second_frequency
+                                    label: 'Second Frequency ='
+                                    unit: 'kHz'
+                                    dialog_title: f'Second Frequency ({self.unit}):'
+                                    lower_limit: 0
+                                    upper_limit: 48
+
+                        MDSeparator:
+                            orientation: 'vertical'
+
+                        MDBoxLayout:
+                            orientation: 'vertical'
+                            size_hint: 1, 1
+
+                            MDBoxLayout:
+                                orientation: 'vertical'
+                                size_hint: 1, .8
+
+                                MDLabel:
+                                    text: 'Output Panel'
+                                    size_hint: 1, None
+                                    height: 35
+                                    padding: 15, 0
+                                    md_bg_color: app.SKY_MIST
+
+                                MDBoxLayout:
+                                    size_hint: 1, .7
+                                    padding: 15
+                                    spacing: 20
+
+                                    MDBoxLayout:
+                                        orientation: 'vertical'
+
+                                        EntryBox:
+                                            id: disc_young_modulus_output
+                                            label: 'Young\'s Modulus ='
+                                            unit: 'GPa'
+                                            is_output: True
+
+                                        EntryBox:
+                                            id: disc_shear_modulus_output
+                                            label: 'Shear Modulus ='
+                                            unit: 'GPa'
+                                            is_output: True
+
+                                        EntryBox:
+                                            id: disc_poisson_ratio_output
+                                            label: 'Poisson Ratio ='
+                                            unit: ''
+                                            is_output: True
+
+                            MDSeparator
+
+                            MDBoxLayout:
+                                size_hint: 1, .2
+                                padding: 15
+                                spacing: 20
+
+                                PrimaryButton:
+                                    id: disc_reset_btn
+                                    size_hint: .5, 1
+                                    text: 'Reset'
+                                    icon: 'cached'
+                                    on_release: root.reset()
+
+                                PrimaryButton:
+                                    id: disc_calculation_btn
+                                    size_hint: .5, 1
+                                    text: 'Calculate'
+                                    icon: 'function'
+                                    on_release: root.disc_calculation()
+
+                Tab:
+                    title: 'DF'
+                    icon: 'sine-wave'
+
+                    MDBoxLayout:
+
+                        MDBoxLayout:
+                            size_hint: .6, 1
+                            orientation: 'vertical'
+
+                            MDLabel:
+                                text: 'Input Panel'
+                                size_hint: 1, None
+                                height: 35
+                                padding: 15, 0
+                                md_bg_color: app.SKY_MIST
+
+                            MDBoxLayout:
+                                size_hint: 1, 1
+                                orientation: 'vertical'
+
+
+                                MDBoxLayout:
+                                    size_hint: 1, .2
+                                    padding: 8
+                                    spacing: 8
+
+                                    ChoiceButton:
+                                        id: first_peak_choice
+                                        text: 'First Peak'
+                                        group: 'measurement_type'
+                                        icon: 'checkbox-marked-circle-outline' if self.state == 'down' else 'circle-outline'
+                                        on_release: root.change_peak_choice()
+
+                                    ChoiceButton:
+                                        id: second_peak_choice
+                                        text: 'Second Peak'
+                                        group: 'measurement_type'
+                                        icon: 'checkbox-marked-circle-outline' if self.state == 'down' else 'circle-outline'
+                                        on_release: root.change_peak_choice()
+
+                                    ChoiceButton:
+                                        id: third_peak_choice
+                                        text: 'Third Peak'
+                                        group: 'measurement_type'
+                                        icon: 'checkbox-marked-circle-outline' if self.state == 'down' else 'circle-outline'
+                                        on_release: root.change_peak_choice()
+
+                                MDSeparator
+
+                                MDBoxLayout:
+                                    size_hint: 1, .8
+                                    padding: 8
+
+                                    MDCard:
+                                        size_hint: 1, 1
+                                        padding: 5
+
+                                        MatplotFigure:
+                                            id: damping_plot
+                                            size_hint: 1, 1
+
+                        MDSeparator:
+                            orientation: 'vertical'
+
+                        MDBoxLayout:
+                            size_hint: .4, 1
+                            orientation: 'vertical'
+
+                            MDLabel:
+                                text: 'Output Panel'
+                                size_hint: 1, None
+                                height: 35
+                                padding: 15, 0
+                                md_bg_color: app.SKY_MIST
+
+                            MDBoxLayout:
+                                size_hint: 1, 1
+                                orientation: 'vertical'
+
+                                MDBoxLayout:
+                                    size_hint: 1, .8
+                                    orientation: 'vertical'
+                                    padding: 8
+
+                                    EntryBox:
+                                        id: f0_output
+                                        label: 'Resonance Frequency : f0 ='
+                                        unit: 'Hz'
+                                        is_output: True
+
+                                    EntryBox:
+                                        id: f1_output
+                                        label: 'Half-Power Frequencies : f1 ='
+                                        unit: 'Hz'
+                                        is_output: True
+
+                                    EntryBox:
+                                        id: f2_output
+                                        label: 'f2 ='
+                                        unit: 'Hz'
+                                        is_output: True
+
+                                    EntryBox:
+                                        id: delta_f
+                                        label: 'Bandwidth : Δf ='
+                                        unit: 'Hz'
+                                        is_output: True
+
+                                    EntryBox:
+                                        id: quality_factor
+                                        label: 'Quality Factor : Q ='
+                                        unit: ''
+                                        is_output: True
+
+                                    EntryBox:
+                                        id: df
+                                        label: 'Damping Factor : ζ ='
+                                        unit: ''
+                                        is_output: True
+
+                                MDSeparator
+
+                                MDBoxLayout:
+                                    size_hint: 1, .2
+                                    padding: 8
+                                    spacing: 8
+
+                                    PrimaryButton:
+                                        id: df_reset_btn
+                                        size_hint: .5, 1
+                                        text: 'Reset'
+                                        icon: 'cached'
+                                        on_release: root.reset()
+                                        disabled: True
+
+                                    PrimaryButton:
+                                        id: df_calculation_btn
+                                        size_hint: .5, 1
+                                        text: 'Calculate'
+                                        icon: 'function'
+                                        on_release: root.damping_factor()
+                                        disabled: True
+
+        Panel:
+            id: modulus_panel
+            left_icon: 'arrow-left'
+            left_label: 'Back'
+            left_action: lambda: root.manager.back('right')
+            right_icon: 'tray-arrow-down'
+            right_label: 'Save'
+            right_action: root.open_save_dialog
+

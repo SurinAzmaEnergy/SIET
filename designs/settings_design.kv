@@ -1,0 +1,406 @@
+#: kivy 2.3.0
+
+
+<SetTimeContent>:
+    padding: 10
+    spacing: 50
+    size_hint_y: None
+    height: '120dp'
+    orientation: 'vertical'
+
+    MDBoxLayout:
+        spacing: 10
+
+        MDTextField:
+            id: hour_field
+            mode: 'line'
+            hint_text: 'Hour'
+
+        MDLabel:
+            size_hint: .1, 1
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            text: ':'
+
+        MDTextField:
+            id: minute_field
+            mode: 'line'
+            hint_text: 'Minute'
+
+        MDLabel:
+            size_hint: .1, 1
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            text: ':'
+
+        MDTextField:
+            id: second_field
+            mode: 'line'
+            hint_text: 'Second'
+
+
+<SetDateContent>:
+    padding: 10
+    spacing: 50
+    size_hint_y: None
+    height: '120dp'
+    orientation: 'vertical'
+
+    MDBoxLayout:
+        spacing: 10
+
+        MDTextField:
+            id: year_field
+            mode: 'line'
+            hint_text: 'Year'
+
+        MDLabel:
+            size_hint: .1, 1
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            text: '/'
+
+        MDTextField:
+            id: month_field
+            mode: 'line'
+            hint_text: 'Month'
+
+        MDLabel:
+            size_hint: .1, 1
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            text: '/'
+
+        MDTextField:
+            id: day_field
+            mode: 'line'
+            hint_text: 'Day'
+
+
+<GeneralSettingsScreen>:
+    name: 'general_settings'
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDBoxLayout:
+            size_hint: 1, .1
+            md_bg_color: .23, .29, .36, 1
+            padding: 20, 0
+
+            MonoLabel:
+                text: 'General Settings'
+
+        MDBoxLayout:
+            size_hint: 1, .75
+            md_bg_color: .86, .86, .88, 1
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                size_hint: .8, 1
+
+                MDBoxLayout:
+                    size_hint: 1, .4
+                    orientation: 'vertical'
+
+                    MDBoxLayout:
+                        md_bg_color: app.SKY_MIST
+                        size_hint: 1, None
+                        height: '69dp'
+                        padding: 20, 0
+
+                        MDLabel:
+                            text: 'Set Date and Time'
+
+                    MDBoxLayout:
+                        padding: 20
+                        spacing: 20
+                        size_hint: 1, 1
+
+                        PrimaryButton:
+                            size_hint: 1, 1
+                            text: 'Set Time'
+                            icon: 'clock-time-eight-outline'
+                            on_release: root.open_set_time_dialog()
+
+                        PrimaryButton:
+                            size_hint: 1, 1
+                            text: 'Set Date'
+                            icon: 'calendar-range'
+                            on_release: root.open_set_date_dialog()
+
+                MDSeparator
+
+                MDBoxLayout:
+                    size_hint: 1, .6
+                    orientation: 'vertical'
+
+                    MDBoxLayout:
+                        md_bg_color: app.SKY_MIST
+                        size_hint: 1, None
+                        height: '75dp'
+                        padding: 20, 0
+
+                        MDLabel:
+                            text: 'Filter Selection'
+
+                        PrimaryButton:
+                            id: all_pass_btn
+                            text: 'All Pass'
+                            on_release: root.all_pass()
+                            pos_hint: {'center_y': .5}
+
+                    MDBoxLayout:
+                        padding: 20
+                        spacing: 20
+                        size_hint: 1, 1
+                        id: frequencies_label
+
+                        MDCard:
+                            orientation: 'vertical'
+                            padding: 10
+
+                            MonoLabel:
+                                id: low_freq_label
+                                size_hint: 1, .6
+                                color: app.VOID_BLACK
+                                font_size: 22
+
+                            MDSlider:
+                                id: low_freq
+                                on_value: root.update_label('low_freq_label', self.value)
+                                size_hint: 1, .2
+                                hint: False
+                                min: .02
+                                step: .02
+
+                            MDBoxLayout:
+                                size_hint: 1, .2
+                                padding: 10, 0
+                                MonoLabel:
+                                    text: 'Min: 0.02 kHz'
+                                    font_size: 20
+                                    color: app.VOID_BLACK
+                                    halign: 'left'
+
+                                MonoLabel:
+                                    id: low_freq_max
+                                    font_size: 20
+                                    color: app.VOID_BLACK
+                                    halign: 'right'
+
+                        MDCard:
+                            orientation: 'vertical'
+                            padding: 10
+
+                            MonoLabel:
+                                id: high_freq_label
+                                size_hint: 1, .6
+                                color: app.VOID_BLACK
+                                font_size: 22
+
+                            MDSlider:
+                                id: high_freq
+                                on_value: root.update_label('high_freq_label', self.value)
+                                size_hint: 1, .2
+                                hint: False
+                                max: 24
+                                step: .02
+
+                            MDBoxLayout:
+                                size_hint: 1, .2
+                                padding: 10, 0
+                                MonoLabel:
+                                    id: high_freq_min
+                                    font_size: 20
+                                    color: app.VOID_BLACK
+                                    halign: 'left'
+
+                                MonoLabel:
+                                    text: 'Max: 24 kHz'
+                                    font_size: 20
+                                    color: app.VOID_BLACK
+                                    halign: 'right'
+
+            MDSeparator:
+                orientation: 'vertical'
+
+            MDBoxLayout:
+                size_hint: .2, 1
+                padding: 5, 20
+
+                PrimaryButton:
+                    size_hint: 1, .15
+                    text: 'Advanced'
+                    icon: 'tune'
+                    on_release:
+                        app.root.current = 'advanced_settings'
+                        root.manager.transition.direction = 'up'
+
+        Panel:
+            left_icon: 'arrow-up'
+            left_label: 'Back'
+            left_action: lambda: root.manager.back('down')
+            right_icon: 'content-save-cog-outline'
+            right_label: 'Save'
+            right_action: root.save
+
+<AdvancedSettingsScreen>:
+    name: 'advanced_settings'
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDBoxLayout:
+            size_hint: 1, .1
+            md_bg_color: .23, .29, .36, 1
+            padding: 20, 0
+
+            MonoLabel:
+                text: 'Advanced Settings'
+
+        MDBoxLayout:
+            size_hint: 1, .75
+            md_bg_color: .86, .86, .88, 1
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                size_hint: .8, 1
+
+                MDBoxLayout:
+                    size_hint: 1, .33
+                    padding: 15
+
+                    MDCard:
+                        orientation: 'vertical'
+                        padding: 10
+
+                        MonoLabel:
+                            id: resolution_label
+                            size_hint: 1, .6
+                            color: app.VOID_BLACK
+
+                        MDSlider:
+                            id: resolution_slider
+                            size_hint: 1, .2
+                            hint: False
+                            on_value: root.update_label('resolution', self.value)
+                            min: .1
+                            max: 10.0
+                            step: .1
+
+                        MDBoxLayout:
+                            size_hint: 1, .2
+                            padding: 10, 0
+                            MonoLabel:
+                                text: 'Min: 0.1 Hz'
+                                color: app.VOID_BLACK
+                                halign: 'left'
+
+                            MonoLabel:
+                                text: 'Max: 10.0 Hz'
+                                color: app.VOID_BLACK
+                                halign: 'right'
+
+                MDSeparator
+
+                MDBoxLayout:
+                    size_hint: 1, .33
+                    padding: 15
+
+                    MDCard:
+                        orientation: 'vertical'
+                        padding: 10
+
+                        MonoLabel:
+                            id: sensitivity_label
+                            size_hint: 1, .6
+                            color: app.VOID_BLACK
+
+                        MDSlider:
+                            id: sensitivity_slider
+                            value: 2.0
+                            size_hint: 1, .2
+                            hint: False
+                            on_value: root.update_label('sensitivity', self.value)
+                            min: 1.0
+                            max: 5.0
+                            step: .1
+
+                        MDBoxLayout:
+                            size_hint: 1, .2
+                            padding: 10, 0
+                            MonoLabel:
+                                text: 'Min: 1.0'
+                                color: app.VOID_BLACK
+                                halign: 'left'
+
+                            MonoLabel:
+                                text: 'Max: 5.0'
+                                color: app.VOID_BLACK
+                                halign: 'right'
+
+                MDBoxLayout:
+                    size_hint: 1, .33
+                    padding: 15
+
+                    MDCard:
+                        orientation: 'vertical'
+                        padding: 10
+
+                        MonoLabel:
+                            id: distance_label
+                            size_hint: 1, .6
+                            color: app.VOID_BLACK
+
+                        MDSlider:
+                            id: distance_slider
+                            value: 2.0
+                            size_hint: 1, .2
+                            hint: False
+                            on_value: root.update_label('distance', self.value)
+                            min: 1
+                            max: 300
+                            step: 1
+
+                        MDBoxLayout:
+                            size_hint: 1, .2
+                            padding: 10, 0
+                            MonoLabel:
+                                text: 'Min: 1.0 Hz'
+                                color: app.VOID_BLACK
+                                halign: 'left'
+
+                            MonoLabel:
+                                text: 'Max: 300 Hz'
+                                color: app.VOID_BLACK
+                                halign: 'right'
+
+            MDSeparator:
+                orientation: 'vertical'
+
+            MDBoxLayout:
+                size_hint: .2, 1
+                padding: 10
+                spacing: 10
+                orientation: 'vertical'
+
+                MDBoxLayout:
+                    size_hint: 1, .7
+
+                PrimaryButton:
+                    size_hint: 1, .15
+                    text: 'Default'
+                    icon: 'cog-sync'
+                    on_release: root.default()
+
+                PrimaryButton:
+                    size_hint: 1, .15
+                    text: 'Update'
+                    icon: 'update'
+                    on_release: root.update()
+
+        Panel:
+            left_icon: 'arrow-up'
+            left_label: 'Back'
+            left_action: root.back_to_general
+            right_icon: 'content-save-cog-outline'
+            right_label: 'Save'
+            right_action: root.save
+

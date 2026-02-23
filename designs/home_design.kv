@@ -1,0 +1,140 @@
+#: kivy 2.3.1
+
+
+<HomeScreen>:
+    name: 'home'
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDBoxLayout:
+            size_hint: 1, .3
+            orientation: 'vertical'
+            md_bg_color: app.STALE_BLUE
+            padding: 0, 25
+
+            MonoLabel:
+                id: first_peak
+
+            MonoLabel:
+                id: second_peak
+
+            MonoLabel:
+                id: third_peak
+
+        MDBoxLayout:
+            size_hint: 1, .55
+            orientation: 'vertical'
+            md_bg_color: app.STALE_GRAY
+            spacing: 25
+            padding: 20
+
+            MDBoxLayout:
+                size_hint: 1, .69
+                spacing: 25
+
+                MDBoxLayout:
+                    size_hint: .5, 1
+
+                    MDCard:
+                        id: state_card
+                        orientation: 'vertical'
+                        padding: 20
+
+                        MDBoxLayout:
+                            size_hint: 1, .3
+                            md_bg_color: app.STALE_BLUE
+                            padding: 30, 0
+
+                            MonoLabel:
+                                text: 'STATUS'
+                                color: app.PURE_LIGHT
+                                font_size: 19
+
+                            MDIcon:
+                                icon: 'state-machine'
+                                color: app.PURE_LIGHT
+                                pos_hint: {'center_y': .5}
+
+                        MDBoxLayout:
+                            size_hint: 1, .7
+
+                            MDLabel:
+                                id: state_label
+                                text: 'StandBy'
+                                halign: 'center'
+                                font_style: 'H3'
+
+                MDBoxLayout:
+                    size_hint: .5, 1
+                    spacing: 25
+                    orientation: 'vertical'
+
+                    PrimaryButton:
+                        id: start_stop_btn
+                        size_hint: 1, .5
+                        text: 'Start'
+                        icon: 'microphone-outline'
+                        on_release: root.start_stop(False)
+                        font_size: 30
+
+                    PrimaryButton:
+                        id: calculation_btn
+                        size_hint: 1, .5
+                        text: 'E/G Modulus Calculation'
+                        icon: 'math-compass'
+                        disabled: True
+                        on_release:
+                            root.manager.current = 'modulus'
+                            root.manager.transition.direction = 'left'
+
+            MDSeparator
+
+            MDBoxLayout:
+                size_hint: 1, .31
+                spacing: 25
+
+                PrimaryButton:
+                    id: archive_btn
+                    size_hint: .25, 1
+                    text: 'Archive'
+                    icon: 'archive-outline'
+                    on_release:
+                        root.manager.current = 'archive'
+                        root.manager.transition.direction = 'right'
+
+                PrimaryButton:
+                    size_hint: .25, 1
+                    text: 'Serial Test'
+                    icon: 'format-list-bulleted'
+                    disabled: True
+
+                PrimaryButton:
+                    id: show_fft_btn
+                    size_hint: .25, 1
+                    text: 'Show FFT'
+                    icon: 'poll'
+                    disabled: True
+                    on_release:
+                        root.manager.current = 'fft'
+                        root.manager.transition.direction = 'left'
+
+                PrimaryButton:
+                    id: show_wave_btn
+                    size_hint: .25, 1
+                    text: 'Show Wave'
+                    icon: 'waveform'
+                    disabled: True
+                    on_release:
+                        root.manager.current = 'wave'
+                        root.manager.transition.direction = 'left'
+
+        Panel:
+            id: home_panel
+            left_label: 'Reboot'
+            left_icon: 'refresh'
+            left_action: root.reboot
+            right_label: 'Settings'
+            right_icon: 'cog-outline'
+            right_action: root.open_settings
+
