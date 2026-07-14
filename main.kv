@@ -24,6 +24,18 @@
 #: import Clavius screens.clavius
 #: include designs/clavius.kv
 
+#: import QCScreen screens.qc_screen
+#: include designs/qc_design.kv
+
+#: import ReferenceSetScreen screens.qc_reference_screen
+#: include designs/qc_reference_design.kv
+
+#: import QCTestScreen screens.qc_test_screen
+#: include designs/qc_test_design.kv
+
+#: import QCSettingsScreen screens.qc_settings_screen
+#: include designs/qc_settings_design.kv
+
 
 <MonoLabel@MDLabel>:
     font_name: 'fonts/RobotoMono-Regular.ttf'
@@ -178,4 +190,7 @@
     GeneralSettingsScreen
     AdvancedSettingsScreen
     Clavius
-
+    QCScreen
+    ReferenceSetScreen
+    QCTestScreen
+    QCSettingsScreen

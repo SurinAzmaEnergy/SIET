@@ -388,7 +388,6 @@
                     icon: 'format-list-bulleted'
 
                     MDBoxLayout:
-
                         MDBoxLayout:
                             orientation: 'vertical'
 
@@ -507,6 +506,301 @@
                                     text: 'Calculate'
                                     icon: 'function'
                                     on_release: root.disc_calculation()
+
+                Tab:
+                    title: 'PIPE'
+                    icon: 'format-list-bulleted'
+
+                    MDBoxLayout:
+                        MDBoxLayout:
+                            orientation: 'vertical'
+
+                            MDLabel:
+                                text: 'Input Panel'
+                                size_hint: 1, None
+                                height: 35
+                                padding: 15, 0
+                                md_bg_color: app.SKY_MIST
+
+                            MDBoxLayout:
+                                orientation: 'vertical'
+                                padding: 10
+
+                                EntryBox:
+                                    id: pipe_length
+                                    label: 'Length ='
+                                    unit: 'mm'
+                                    dialog_title: f'Length ({self.unit}):'
+                                    lower_limit: 0
+                                    upper_limit: 10000
+
+                                EntryBox:
+                                    id: pipe_outer_radius
+                                    label: 'Outer Radius ='
+                                    unit: 'mm'
+                                    dialog_title: f'Outer Radius ({self.unit}):'
+                                    lower_limit: 0
+                                    upper_limit: 10000
+
+                                EntryBox:
+                                    id: pipe_inner_radius
+                                    label: 'Inner Radius ='
+                                    unit: 'mm'
+                                    dialog_title: f'Inner Radius ({self.unit}):'
+                                    lower_limit: 0
+                                    upper_limit: 10000
+
+                                EntryBox:
+                                    id: pipe_mass
+                                    label: 'Mass ='
+                                    unit: 'g'
+                                    dialog_title: f'Mass ({self.unit}):'
+                                    lower_limit: 0
+                                    upper_limit: 10000
+
+                                EntryBox:
+                                    id: pipe_frequency
+                                    label: 'Frequency ='
+                                    unit: 'kHz'
+                                    dialog_title: f'Frequency ({self.unit}):'
+                                    lower_limit: 0
+                                    upper_limit: 10000
+
+                        MDSeparator:
+                            orientation: 'vertical'
+
+                        MDBoxLayout:
+                            orientation: 'vertical'
+                            size_hint: 1, 1
+
+                            MDBoxLayout:
+                                orientation: 'vertical'
+                                size_hint: 1, .8
+
+                                MDLabel:
+                                    text: 'Output Panel'
+                                    size_hint: 1, None
+                                    height: 35
+                                    padding: 15, 0
+                                    md_bg_color: app.SKY_MIST
+
+                                MDBoxLayout:
+                                    size_hint: 1, .7
+                                    padding: 15
+                                    spacing: 20
+
+                                    MDBoxLayout:
+                                        orientation: 'vertical'
+
+                                        EntryBox:
+                                            id: pipe_young_modulus_output
+                                            label: 'Dynamic Young\'s Modulus ='
+                                            unit: 'GPa'
+                                            is_output: True
+
+                                        EntryBox:
+                                            id: pipe_shear_modulus_output
+                                            label: 'Dynamic Shear Modulus ='
+                                            unit: 'GPa'
+                                            is_output: True
+
+                                        EntryBox:
+                                            id: pipe_poisson_ratio
+                                            label: 'Poisson Ratio ='
+                                            unit: ''
+                                            is_output: True
+
+                            MDSeparator
+
+                            MDBoxLayout:
+                                size_hint: 1, .2
+                                padding: 15
+                                spacing: 20
+
+                                PrimaryButton:
+                                    id: disc_reset_btn
+                                    size_hint: .5, 1
+                                    text: 'Reset'
+                                    icon: 'cached'
+                                    on_release: root.reset()
+
+                                PrimaryButton:
+                                    id: disc_calculation_btn
+                                    size_hint: .5, 1
+                                    text: 'Calculate'
+                                    icon: 'function'
+                                    on_release: root.pipe_calculation()
+
+                Tab:
+                    title: 'GW'
+                    icon: 'format-list-bulleted'
+
+                    MDBoxLayout:
+                        MDBoxLayout:
+                            orientation: 'vertical'
+
+                            MDLabel:
+                                text: 'Input Panel'
+                                size_hint: 1, None
+                                height: 35
+                                padding: 15, 0
+                                md_bg_color: app.SKY_MIST
+
+                            MDBoxLayout:
+                                orientation: 'vertical'
+                                padding: 10
+
+                                EntryBox:
+                                    id: gw_approach
+                                    label: 'Approach ='
+                                    unit: ''
+                                    dialog_title: f'Approach ({self.unit}):'
+                                    lower_limit: 1
+                                    upper_limit: 3
+
+                                EntryBox:
+                                    id: gw_outer_diameter
+                                    label: 'Outer Diameter ='
+                                    unit: 'mm'
+                                    dialog_title: f'Outer Diameter ({self.unit}):'
+                                    lower_limit: 0
+                                    upper_limit: 10000
+
+                                EntryBox:
+                                    id: gw_core_diameter
+                                    label: 'Core Diameter ='
+                                    unit: 'mm'
+                                    dialog_title: f'Core Diameter ({self.unit}):'
+                                    lower_limit: 0
+                                    upper_limit: 10000
+
+                                EntryBox:
+                                    id: gw_thickness
+                                    label: 'Thickness ='
+                                    unit: 'mm'
+                                    dialog_title: f'Thickness ({self.unit}):'
+                                    lower_limit: 0
+                                    upper_limit: 1000
+
+                                EntryBox:
+                                    id: gw_mass
+                                    label: 'Mass ='
+                                    unit: 'g'
+                                    dialog_title: f'Mass ({self.unit}):'
+                                    lower_limit: 0
+                                    upper_limit: 20000
+
+                                EntryBox:
+                                    id: gw_frequency
+                                    label: 'Frequency ='
+                                    unit: 'kHz'
+                                    dialog_title: f'Frequency ({self.unit}):'
+                                    lower_limit: 0
+                                    upper_limit: 48
+
+                                EntryBox:
+                                    id: gw_poisson_ratio
+                                    label: 'Poisson Ratio ='
+                                    unit: 'kHz'
+                                    dialog_title: f'Poisson Ratio ({self.unit}):'
+                                    lower_limit: 0
+                                    upper_limit: 1
+
+                        MDSeparator:
+                            orientation: 'vertical'
+
+                        MDBoxLayout:
+                            orientation: 'vertical'
+                            size_hint: 1, 1
+
+                            MDBoxLayout:
+                                orientation: 'vertical'
+                                size_hint: 1, .25
+
+                                MDLabel:
+                                    text: 'Material Type'
+                                    size_hint: 1, None
+                                    height: 35
+                                    padding: 15, 0
+                                    md_bg_color: app.SKY_MIST
+
+                                MDBoxLayout:
+                                    size_hint: 1, 1
+                                    padding: 15
+                                    spacing: 20
+
+                                    ChoiceButton:
+                                        id: ceramic_gw_choice
+                                        text: 'Ceramic'
+                                        group: 'material_type'
+                                        icon: 'checkbox-marked-circle-outline' if self.state == 'down' else 'circle-outline'
+                                        on_release: root.change_gw_choice()
+
+                                    ChoiceButton:
+                                        id: resinoid_gw_choice
+                                        text: 'Resinoid'
+                                        group: 'material_type'
+                                        icon: 'checkbox-marked-circle-outline' if self.state == 'down' else 'circle-outline'
+                                        on_release: root.change_gw_choice()
+
+
+                            MDBoxLayout:
+                                orientation: 'vertical'
+                                size_hint: 1, .4
+
+                                MDLabel:
+                                    text: 'Output Panel'
+                                    size_hint: 1, None
+                                    height: 35
+                                    padding: 15, 0
+                                    md_bg_color: app.SKY_MIST
+
+                                MDBoxLayout:
+                                    size_hint: 1, .7
+                                    padding: 10
+                                    spacing: 10
+
+                                    MDBoxLayout:
+                                        orientation: 'vertical'
+
+                                        EntryBox:
+                                            id: gw_young_modulus_output
+                                            label: 'Dynamic Young\'s Modulus ='
+                                            unit: 'GPa'
+                                            is_output: True
+
+                                        EntryBox:
+                                            id: gw_hardness_grade
+                                            label: 'Hardness Grade ='
+                                            unit: ''
+                                            is_output: True
+
+                                        EntryBox:
+                                            id: gw_density
+                                            label: 'Density ='
+                                            unit: ''
+                                            is_output: True
+
+                            MDSeparator
+
+                            MDBoxLayout:
+                                size_hint: 1, .15
+                                padding: 15
+                                spacing: 20
+
+                                PrimaryButton:
+                                    id: gw_reset_btn
+                                    size_hint: .5, 1
+                                    text: 'Reset'
+                                    icon: 'cached'
+                                    on_release: root.reset()
+
+                                PrimaryButton:
+                                    id: gw_calculation_btn
+                                    size_hint: .5, 1
+                                    text: 'Calculate'
+                                    icon: 'function'
+                                    on_release: root.gw_calculation()
 
                 Tab:
                     title: 'DF'
@@ -660,4 +954,3 @@
             right_icon: 'tray-arrow-down'
             right_label: 'Save'
             right_action: root.open_save_dialog
-

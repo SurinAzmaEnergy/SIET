@@ -1,0 +1,83 @@
+#: kivy 2.3.1
+
+
+<ReferenceSetScreen>:
+    name: 'reference_set'
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDBoxLayout:
+            size_hint: 1, .1
+            md_bg_color: app.STALE_BLUE
+            padding: 20, 0
+
+            MonoLabel:
+                id: slot_id
+                halign: 'left'
+
+            MonoLabel:
+                id: slot_name
+                halign: 'right'
+
+        MDBoxLayout:
+            size_hint: 1, .75
+            md_bg_color: app.STALE_GRAY
+            padding: 10
+            spacing: 10
+
+            MDCard:
+                size_hint: .8, 1
+                padding: 15
+
+                MatplotFigure:
+                    id: ref_plot
+                    size_hint: 1, 1
+
+            MDBoxLayout:
+                size_hint: .2, 1
+                orientation: 'vertical'
+                spacing: 15
+                padding: 0, 20
+
+                PrimaryButton:
+                    id: set_ref
+                    size_hint: 1, .4
+                    text: 'Set Reference'
+                    icon: 'target'
+                    font_size: 18
+                    on_release: root.set_reference()
+
+                PrimaryButton:
+                    id: ref_export
+                    size_hint: 1, .2
+                    text: 'Export'
+                    icon: 'export'
+                    font_size: 18
+                    on_release: root.show_save_dialog()
+
+                PrimaryButton:
+                    id: ref_rename
+                    size_hint: 1, .2
+                    text: 'Rename'
+                    icon: 'rename-box-outline'
+                    font_size: 18
+                    on_release: root.show_rename_dialog()
+
+                MDSeparator
+
+                PrimaryButton:
+                    id: ref_start
+                    size_hint: 1, .2
+                    text: 'Start'
+                    icon: 'play-box-outline'
+                    font_size: 18
+                    on_release: root.start()
+
+        Panel:
+            left_icon: 'arrow-up'
+            left_label: 'Back'
+            left_action: lambda: root.manager.back('down', current='qc')
+            right_label: 'Settings'
+            right_icon: 'cog-outline'
+            right_action: root.open_general_settings

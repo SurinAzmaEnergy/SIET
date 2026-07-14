@@ -1,5 +1,6 @@
 import json
 import os
+from math import sqrt, floor, pi
 import numpy as np
 from datetime import datetime
 import matplotlib.pyplot as plt
@@ -31,6 +32,7 @@ class ModulusScreen(MDScreen):
     bar_choice = StringProperty('')
     rod_choice = StringProperty('')
     peak_choice = NumericProperty(-1)
+    gw_choice = StringProperty('')
 
     def __ini__(self, **kwargs):
         super().__init__(**kwargs)
@@ -106,6 +108,20 @@ class ModulusScreen(MDScreen):
             (value for key, value in peak_choices.items()
              if getattr(self.ids, key).state == 'down'),
              -1
+        )
+
+        self.update_calculation_button_status()
+
+    def change_gw_choice(self):
+        gw_choices = {
+            'ceramic_gw_choice': 'ceramic_bond_gw',
+            'resinoid_gw_choice': 'resinoid_bond_gw',
+        }
+
+        self.gw_choice = next(
+            (value for key, value in gw_choices.items()
+             if getattr(self.ids, key).state == 'down'),
+            ''
         )
 
         self.update_calculation_button_status()
@@ -314,6 +330,22 @@ class ModulusScreen(MDScreen):
                 field.text = ''
 
             self.empty_damping_plot()
+        elif self.tab == 'PIPE':
+            for field in [
+                self.ids.pipe_length.ids.label_field,
+                self.ids.pipe_outer_radius.ids.label_field,
+                self.ids.pipe_inner_radius.ids.label_field,
+                self.ids.pipe_mass.ids.label_field,
+                self.ids.pipe_frequency.ids.label_field
+            ]:
+                field.text = ''
+
+            for field in [
+                self.ids.pipe_young_modulus_output.ids.label_field,
+                self.ids.pipe_shear_modulus_output.ids.label_field,
+                self.ids.pipe_poisson_ratio.ids.label_field
+            ]:
+                field.text = ''
 
         self.update_calculation_button_status()
 
@@ -405,6 +437,31 @@ class ModulusScreen(MDScreen):
                 bool(self.ids.disc_young_modulus_output.ids.label_field.text),
                 bool(self.ids.disc_shear_modulus_output.ids.label_field.text),
                 bool(self.ids.disc_poisson_ratio_output.ids.label_field.text)
+            ]
+
+            calculate_button.disabled = not all(fields)
+            reset_button.disabled = not any(fields)
+
+            self.ids.modulus_panel.ids.right_button.disabled = not any(output_fields)
+
+        elif self.tab == 'GW':
+            return
+
+            calculate_button = self.ids.gw_calculation_btn
+            reset_button = self.ids.gw_reset_btn
+
+            fields = [
+                bool(self.ids.gw_outer_diameter.ids.label_field.text),
+                bool(self.ids.gw_core_diameter.ids.label_field.text),
+                bool(self.ids.gw_thickness.ids.label_field.text),
+                bool(self.ids.disc_first_frequency.ids.label_field.text),
+                bool(self.ids.disc_second_frequency.ids.label_field.text),
+            ]
+
+            output_fields = [
+                bool(self.ids.gw_young_modulus_output.ids.label_field.text),
+                bool(self.ids.gw_hardness_grade.ids.label_field.text),
+                bool(self.ids.gw_density.ids.label_field.text),
             ]
 
             calculate_button.disabled = not all(fields)
@@ -573,7 +630,6 @@ class ModulusScreen(MDScreen):
 
         self.update_calculation_button_status()
 
-
     def disc_calculation(self):
         inputs = {
             'diameter': self.ids.disc_diameter.ids.label_field.text,
@@ -630,6 +686,241 @@ class ModulusScreen(MDScreen):
         self.ids.disc_poisson_ratio_output.ids.label_field.text = result['poisson_ratio_output']
 
         self.update_calculation_button_status()
+
+    def pipe_calculation(self):
+        inputs = {
+            'length': self.ids.pipe_length.ids.label_field.text,
+            'outer_radius': self.ids.pipe_outer_radius.ids.label_field.text,
+            'inner_radius': self.ids.pipe_inner_radius.ids.label_field.text,
+            'mass': self.ids.pipe_mass.ids.label_field.text,
+            'frequency': self.ids.pipe_frequency.ids.label_field.text,
+        }
+
+        f = float(inputs['frequency']) * 1000
+        length = float(inputs['length']) * 0.001
+        M = float(inputs['mass']) * 0.001
+        ro = float(inputs['outer_radius']) * 0.001
+        ri = float(inputs['inner_radius']) * 0.001
+
+        # The calculation must be in `core.py` but whatever....
+        ML = M / length
+        I = np.pi / 2 * (ro**4 - ri**4)
+        E = (2 * np.pi * f * (length / np.pi) ** 2) ** 2 * ML / I / 10**9
+
+        self.ids.pipe_young_modulus_output.ids.label_field.text = f"{E:.4f}"
+        self.ids.pipe_shear_modulus_output.ids.label_field.text = '-'
+        self.ids.pipe_poisson_ratio.ids.label_field.text = '-'
+
+        self.update_calculation_button_status()
+
+    def gw_calculation(self):
+        inputs = {
+            'estimation_approach': self.ids.gw_approach.ids.label_field.text,
+
+            'materials_type': self.gw_choice,
+
+            'outer_diameter': self.ids.gw_outer_diameter.ids.label_field.text,
+            'core_diameter': self.ids.gw_core_diameter.ids.label_field.text,
+            'thickness': self.ids.gw_thickness.ids.label_field.text,
+            'mass': self.ids.gw_mass.ids.label_field.text,
+            'frequency': self.ids.gw_mass.ids.label_field.text,
+            'poisson_ratio': self.ids.gw_poisson_ratio.ids.label_field.text,
+        }
+
+        estimation_approach = inputs["estimation_approach"]
+        materials_type = inputs["materials_type"]
+
+        Do = float(inputs["outer_diameter"])
+        Di = float(inputs["core_diameter"])
+        t = float(inputs["thickness"])
+        f = float(inputs["frequency"])
+        m = float(inputs["mass"])
+        poisson = float(inputs["poisson_ratio"])
+        ro = Do / 2
+        ri = Di / 2
+        volume = pi * t * (Do**2 - Di**2) / 4 * 10**-9
+        density = m / volume
+
+        errors = []
+
+        E = None
+
+        if estimation_approach == "1":
+            if ri / ro < 0.2:
+                Lambda2 = 5.2
+                E = (
+                    (48 * pi**2 * f**2 * ro**4 * (1 - poisson**2) * density)
+                    / (Lambda2**2 * t**2)
+                    * 10**-9
+                )
+            else:
+                if ro / t < 1.5:
+                    self.bar_error_dialog = MDDialog(
+                        title='Invalid Inputs!',
+                        text="Please insert Do / t > 3.0",
+                        buttons=[
+                            MDFlatButton(
+                                text='OK',
+                                on_release=lambda _: self.bar_error_dialog.dismiss()
+                            )
+                        ]
+                    )
+                    self.bar_error_dialog.open()
+                    self.ids.gw_young_modulus_output.ids.label_field.text = f'---'
+                    self.ids.gw_hardness_grade.ids.label_field.text = f'---'
+                    self.ids.gw_density.ids.label_field.text = f'---'
+
+                if ro / t >= 1.5 and ro / t <= 3:
+                    x = ri / ro
+                    y = ro / t
+                    p00 = 3.374
+                    p10 = -3.519
+                    p01 = 1.194
+                    p11 = 0.01581
+                    p02 = -0.1355
+                    Lambda2 = p00 + p10 * x + p01 * y + p11 * x * y + p02 * y**2
+                    E = (
+                        (48 * pi**2 * f**2 * ro**4 * (1 - poisson**2) * density)
+                        / (Lambda2**2 * t**2)
+                        * 10**-9
+                    )
+                if ro / t > 3:
+                    x = ri / ro
+                    y = ro / t
+                    p00 = 5.543
+                    p10 = -3.259
+                    p01 = 0.08079
+                    p11 = 0.00134
+                    p02 = -0.002655
+                    Lambda2 = p00 + p10 * x + p01 * y + p11 * x * y + p02 * y**2
+
+                    if ro / t < 4:
+                        Correction_factor = 1.04 - 0.04 * (ro / t - 3)
+                    else:
+                        Correction_factor = 1
+
+                    E = (
+                        (48 * pi**2 * f**2 * ro**4 * (1 - poisson**2) * density)
+                        / (Lambda2**2 * t**2)
+                        * 10**-9
+                        * Correction_factor
+                    )
+
+        elif estimation_approach == "2":
+            if ri / ro < 0.2:
+                Lambda2 = 5.2
+                E = (
+                    (48 * pi**2 * f**2 * ro**4 * (1 - poisson**2) * density)
+                    / (Lambda2**2 * t**2)
+                    * 10**-9
+                )
+            else:
+                Lambda2 = 5.908 - 3.4 * ri / ro
+                E = (
+                    (48 * pi**2 * f**2 * ro**4 * (1 - poisson**2) * density)
+                    / (Lambda2**2 * t**2)
+                    * 10**-9
+                )
+        else:
+            if ri / ro < 0.3:
+                Lambda2 = 5.2
+                E = (
+                    (48 * pi**2 * f**2 * ro**4 * (1 - poisson**2) * density)
+                    / (Lambda2**2 * t**2)
+                    * 10**-9
+                )
+            else:
+                Lambda2 = 5.908 - 3.4 * ri / ro
+                E = (
+                    (48 * pi**2 * f**2 * ro**4 * (1 - poisson**2) * density)
+                    / (Lambda2**2 * t**2)
+                    * 10**-9
+                )
+
+        if E is None:
+            self.ids.gw_young_modulus_output.ids.label_field.text = f'---'
+            self.ids.gw_hardness_grade.ids.label_field.text = f'---'
+            self.ids.gw_density.ids.label_field.text = f'---'
+            return
+
+        if materials_type == "ceramic_bond_gw":
+            if E < 11:
+                hardness_grade = "C"
+            if 11 <= E <= 14:
+                hardness_grade = "D"
+            elif 14 < E <= 17:
+                hardness_grade = "E"
+            elif 17 < E <= 21:
+                hardness_grade = "F"
+            elif 21 < E <= 25:
+                hardness_grade = "G"
+            elif 25 < E <= 30:
+                hardness_grade = "H"
+            elif 30 < E <= 35:
+                hardness_grade = "I"
+            elif 35 < E <= 40:
+                hardness_grade = "J"
+            elif 40 < E <= 45:
+                hardness_grade = "K"
+            elif 45 < E <= 50:
+                hardness_grade = "L"
+            elif 50 < E <= 55:
+                hardness_grade = "M"
+            elif 55 < E <= 60:
+                hardness_grade = "N"
+            elif 60 < E <= 67:
+                hardness_grade = "O"
+            elif 67 < E <= 74:
+                hardness_grade = "P"
+            elif 74 < E <= 88:
+                hardness_grade = "Q"
+            elif E > 88:
+                hardness_grade = "R"
+            else:
+                hardness_grade = "No Defined Range!"
+
+        elif materials_type == "resinoid_bond_gw":
+            if E < 4.4:
+                hardness_grade = "C"
+            if 4.4 <= E <= 5.6:
+                hardness_grade = "D"
+            elif 5.6 < E <= 6.8:
+                hardness_grade = "E"
+            elif 6.8 < E <= 8.4:
+                hardness_grade = "F"
+            elif 8.4 < E <= 10:
+                hardness_grade = "G"
+            elif 10 < E <= 12:
+                hardness_grade = "H"
+            elif 12 < E <= 14:
+                hardness_grade = "I"
+            elif 14 < E <= 16:
+                hardness_grade = "J"
+            elif 16 < E <= 18:
+                hardness_grade = "K"
+            elif 18 <= E <= 20:
+                hardness_grade = "L"
+            elif 20 < E <= 22:
+                hardness_grade = "M"
+            elif 22 < E <= 24:
+                hardness_grade = "N"
+            elif 24 < E <= 27:
+                hardness_grade = "O"
+            elif 27 < E <= 30:
+                hardness_grade = "P"
+            elif E > 30:
+                hardness_grade = "Q"
+            else:
+                hardness_grade = "No Defined Range!"
+
+        Density = density / 1000
+
+        self.ids.gw_young_modulus_output.ids.label_field.text = f'{E:.4f}'
+        self.ids.gw_hardness_grade.ids.label_field.text = f'{hardness_grade}'
+        self.ids.gw_density.ids.label_field.text = f'{Density:.4f}'
+
+        self.update_calculation_button_status()
+
 
     def damping_factor(self):
         self.all_pass_value = self.manager.config_manager.getboolean(
@@ -753,4 +1044,3 @@ class ModulusScreen(MDScreen):
         self.ids.quality_factor.ids.label_field.text = f'{quality_factor:.2f}'
 
         self.update_calculation_button_status()
-

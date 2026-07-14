@@ -1,0 +1,189 @@
+#: kivy 2.3.1
+
+
+<QCSettingsScreen>:
+    name: 'qc_settings'
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDBoxLayout:
+            size_hint: 1, .1
+            md_bg_color: app.STALE_BLUE
+            padding: 20, 0
+
+            MonoLabel:
+                id: slot_id
+                halign: 'left'
+
+            MonoLabel:
+                id: slot_name
+                halign: 'right'
+
+        MDBoxLayout:
+            size_hint: 1, .75
+            md_bg_color: app.STALE_GRAY
+
+            MDBoxLayout:
+                size_hint: .33, 1
+                padding: 10
+
+                MDCard:
+                    orientation: 'vertical'
+
+                    MDBoxLayout:
+                        size_hint: 1, .1
+                        md_bg_color: app.STALE_BLUE
+                        padding: 30, 0
+
+                        MonoLabel:
+                            text: 'QC Indicators'
+                            font_size: 19
+
+                    MDBoxLayout:
+                        size_hint: 1, .9
+                        orientation: 'vertical'
+                        padding: 8
+                        spacing: 8
+
+                        ChoiceButton:
+                            id: freq_shift
+                            font_size: 17
+                            text: 'Frequency Shift'
+                            icon: 'checkbox-marked-circle-outline' if self.state == 'down' else 'circle-outline'
+
+                        ChoiceButton:
+                            id: damping
+                            font_size: 17
+                            text: 'Damping'
+                            icon: 'checkbox-marked-circle-outline' if self.state == 'down' else 'circle-outline'
+
+                        ChoiceButton:
+                            id: peak_splitting
+                            font_size: 17
+                            text: 'Peak Splitting'
+                            icon: 'checkbox-marked-circle-outline' if self.state == 'down' else 'circle-outline'
+
+                        ChoiceButton:
+                            id: peak_intensity
+                            font_size: 17
+                            text: 'Peak Intensity'
+                            icon: 'checkbox-marked-circle-outline' if self.state == 'down' else 'circle-outline'
+
+                        ChoiceButton:
+                            id: missing_mode
+                            font_size: 17
+                            text: 'Missing Mode'
+                            icon: 'checkbox-marked-circle-outline' if self.state == 'down' else 'circle-outline'
+
+                        ChoiceButton:
+                            id: added_mode
+                            font_size: 17
+                            text: 'Added Mode'
+                            icon: 'checkbox-marked-circle-outline' if self.state == 'down' else 'circle-outline'
+
+            MDBoxLayout:
+                size_hint: .33, 1
+                padding: 10
+
+                MDCard:
+                    orientation: 'vertical'
+
+                    MDBoxLayout:
+                        size_hint: 1, .1
+                        md_bg_color: app.STALE_BLUE
+                        padding: 30, 0
+
+                        MonoLabel:
+                            text: 'QC Threshold'
+                            font_size: 19
+
+                    MDBoxLayout:
+                        size_hint: 1, .9
+                        orientation: 'vertical'
+                        spacing: 0
+
+                        EntryBox:
+                            id: frequency_shift_limit
+                            label: 'Freq. Shift ='
+                            unit: '(%)'
+                            dialog_title: f'Frequency Shift Limit ({self.unit}):'
+                            lower_limit: 0
+                            upper_limit: 9999
+
+                        EntryBox:
+                            id: damping_limit
+                            label: 'Damp. Limit ='
+                            unit: '(%)'
+                            dialog_title: f'Damping Limit ({self.unit}):'
+                            lower_limit: 0
+                            upper_limit: 9999
+
+                        EntryBox:
+                            id: split_frequency_gap
+                            label: 'Split Freq. Gap ='
+                            unit: 'Hz'
+                            dialog_title: f'Split Frequency Gap ({self.unit}):'
+                            lower_limit: 0
+                            upper_limit: 9999
+
+                        EntryBox:
+                            id: peak_intensity_limit
+                            label: 'Peak Int. Limit ='
+                            unit: '(%)'
+                            dialog_title: f'Peak Intensity Limit ({self.unit}):'
+                            lower_limit: 0
+                            upper_limit: 9999
+
+            MDBoxLayout:
+                size_hint: .33, 1
+                padding: 10
+
+                MDCard:
+                    orientation: 'vertical'
+
+                    MDBoxLayout:
+                        size_hint: 1, .1
+                        md_bg_color: app.STALE_BLUE
+                        padding: 30, 0
+
+                        MonoLabel:
+                            text: 'Mode Finding Parameters'
+                            font_size: 19
+
+                    MDBoxLayout:
+                        size_hint: 1, .9
+                        orientation: 'vertical'
+
+                        EntryBox:
+                            id: peak_matching_tolerance
+                            label: 'Peak Matching Tol. ='
+                            unit: 'Hz'
+                            dialog_title: f'Peak Matching Tolerance ({self.unit}):'
+                            lower_limit: 0
+                            upper_limit: 9999
+
+                        EntryBox:
+                            id: min_peak_distance
+                            label: 'Min Peak Dist. ='
+                            unit: 'Hz'
+                            dialog_title: f'Peak Matching Tolerance ({self.unit}):'
+                            lower_limit: 0
+                            upper_limit: 9999
+
+                        EntryBox:
+                            id: min_peak_prominence
+                            label: 'Min Peak Prom. ='
+                            unit: '(%)'
+                            dialog_title: f'Peak Matching Tolerance ({self.unit}):'
+                            lower_limit: 0
+                            upper_limit: 9999
+
+        Panel:
+            id: qc_settings_panel
+            left_label: 'Back'
+            left_icon: 'arrow-up'
+            left_action: lambda: root.manager.back_in_settings()
+            right_label: 'Save'
+            right_icon: 'content-save-cog-outline'
+            right_action: root.save

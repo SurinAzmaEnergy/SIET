@@ -343,6 +343,14 @@ class ArchiveScreen(MDScreen):
 
     def can_create_new_folder(self):
         try:
+            current = os.path.abspath(self.current_path)
+            while current != os.path.dirname(current):
+                if os.path.basename(current) == "QCT":
+                    return False
+                current = os.path.dirname(current)
+        except Exception:
+            return False
+        try:
             count = sum(1 for entry in os.scandir(
                 self.current_path) if entry.is_dir())
             return count < 5
@@ -368,29 +376,29 @@ class ArchiveScreen(MDScreen):
         else:
             self.ids.import_button.disabled = True
 
-
         if num_selected == 1:
             selected_path = os.path.join(self.current_path, selected[0][0])
-            if selected_path != self.manager.default:
-                self.ids.rename_button.disabled = False
-            else:
-                self.ids.rename_button.disabled = True
+            selected_name = selected[0][0]
+            is_qct = selected_name == "QCT" and os.path.isdir(selected_path)
+
+            self.ids.rename_button.disabled = (selected_path == self.manager.default) or is_qct
         else:
             self.ids.rename_button.disabled = True
 
         delete_disabled = True
         if num_selected > 0:
             default_path = self.manager.default
-            has_default = any(os.path.join(self.current_path,
-                              row[0]) == default_path for row in selected)
-            delete_disabled = has_default
+            has_default = any(os.path.join(self.current_path, row[0]) == default_path for row in selected)
+            has_qct = any(os.path.basename(row[0]) == "QCT" and os.path.isdir(os.path.join(self.current_path, row[0])) for row in selected)
+
+            delete_disabled = has_default or has_qct
         self.ids.delete_button.disabled = delete_disabled
 
         set_default_disabled = True
         if num_selected == 1:
             name = selected[0][0]
             item_path = os.path.join(self.current_path, name)
-            if os.path.isdir(item_path) and item_path != self.manager.default:
+            if os.path.isdir(item_path) and item_path != self.manager.default and name != "QCT":
                 set_default_disabled = False
         self.ids.set_default_button.disabled = set_default_disabled
 
@@ -667,4 +675,3 @@ class ArchiveScreen(MDScreen):
 
         self.manager.current = 'home'
         self.manager.transition.direction = 'left'
-

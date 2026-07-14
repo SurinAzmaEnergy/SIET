@@ -55,6 +55,7 @@ class Clavius(MDScreen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.rel = {}
+        self.qct = None
 
     def show_main_peak(self):
         main_peak = self.manager.app.main_peak / 1000
@@ -66,8 +67,8 @@ class Clavius(MDScreen):
             print('All children are killed!!')
             self.ids.the_fucking_container.clear_widgets()
 
-        self.show_main_peak()
-
+        if not self.qct:
+            self.show_main_peak()
 
         md_tabs = MDTabs(
             id='tabs',
@@ -159,6 +160,11 @@ class Clavius(MDScreen):
         for field, value in self.fields:
             field.ids.label_field.text = self.rel[field].text
 
-        self.manager.current = 'modulus'
-        self.manager.transition.direction = 'up'
-
+        if self.qct:
+            qct_screen = self.manager.get_screen("qc_settings")
+            qct_screen.after_clavius = True
+            self.manager.current = 'qc_settings'
+            self.manager.transition.direction = 'up'
+        else:
+            self.manager.current = 'modulus'
+            self.manager.transition.direction = 'up'

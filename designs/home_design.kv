@@ -105,9 +105,12 @@
 
                 PrimaryButton:
                     size_hint: .25, 1
-                    text: 'Serial Test'
+                    text: 'QC Test'
                     icon: 'format-list-bulleted'
-                    disabled: True
+                    disabled: False
+                    on_release:
+                        root.manager.current = 'qc'
+                        root.manager.transition.direction = 'right'
 
                 PrimaryButton:
                     id: show_fft_btn
@@ -137,4 +140,3 @@
             right_label: 'Settings'
             right_icon: 'cog-outline'
             right_action: root.open_settings
-

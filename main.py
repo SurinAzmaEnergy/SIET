@@ -1,7 +1,9 @@
+import json
 import threading
 import kivy_matplotlib_widget
 import matplotlib.pyplot as plt
 from datetime import datetime
+from pathlib import Path
 from kivy.clock import Clock
 from kivy.config import ConfigParser
 from kivy.properties import ColorProperty
@@ -19,7 +21,21 @@ from kivymd.uix.dialog import MDDialog
 from kivy.input.providers.mtdev import MTDMotionEvent
 from kivy.input.providers.mouse import MouseMotionEvent
 
-from core import SignalProcessor, Calculator
+from core import SignalProcessor, Calculator, QCT
+
+try:
+    import lgpio
+
+    GPIO_PIN = 17
+
+    h = lgpio.gpiochip_open(0)
+    lgpio.gpio_claim_output(h, GPIO_PIN)
+
+    GPIO_AVAILABLE = True
+    print("GPIO initialized")
+except Exception as e:
+    print(f'==> {e}')
+    GPIO_AVAILABLE = False
 
 
 class PrimaryButton(MDRectangleFlatIconButton): pass
@@ -138,8 +154,9 @@ class EntryBox(MDBoxLayout):
         super().__init__(**kwargs)
 
     def on_touch_down(self, touch):
-        # if not self.collide_point(*touch.pos): return
+        if not self.collide_point(*touch.pos): return
         if self.is_output: return
+
         screen_name = manager.current
         screen = manager.get_screen(screen_name)
 
@@ -180,6 +197,68 @@ class EntryBox(MDBoxLayout):
                     (screen.ids.disc_first_frequency, screen.ids.disc_first_frequency.ids.label_field.text),
                     (screen.ids.disc_second_frequency, screen.ids.disc_second_frequency.ids.label_field.text),
                 ]
+            elif tab == 'PIPE':
+                clavius.fields = [
+                    (screen.ids.pipe_length, screen.ids.pipe_length.ids.label_field.text),
+                    (screen.ids.pipe_outer_radius, screen.ids.pipe_outer_radius.ids.label_field.text),
+                    (screen.ids.pipe_inner_radius, screen.ids.pipe_inner_radius.ids.label_field.text),
+                    (screen.ids.pipe_mass, screen.ids.pipe_mass.ids.label_field.text),
+                    (screen.ids.pipe_frequency, screen.ids.pipe_frequency.ids.label_field.text),
+                ]
+            elif tab == 'GW':
+                clavius.fields = [
+                    (screen.ids.gw_approach, screen.ids.gw_approach.ids.label_field.text),
+                    (screen.ids.gw_outer_diameter, screen.ids.gw_outer_diameter.ids.label_field.text),
+                    (screen.ids.gw_core_diameter, screen.ids.gw_core_diameter.ids.label_field.text),
+                    (screen.ids.gw_thickness, screen.ids.gw_thickness.ids.label_field.text),
+                    (screen.ids.gw_mass, screen.ids.gw_mass.ids.label_field.text),
+                    (screen.ids.gw_frequency, screen.ids.gw_frequency.ids.label_field.text),
+                    (screen.ids.gw_poisson_ratio, screen.ids.gw_poisson_ratio.ids.label_field.text),
+                ]
+
+            manager.current = 'clavius'
+            manager.transition.direction = 'down'
+
+        if screen_name == 'qc_settings':
+
+            clavius = manager.get_screen('clavius')
+            clavius.qct = True
+            clavius.active_tab = self.label[:-2]
+
+            clavius.fields = [
+                (
+                    screen.ids.frequency_shift_limit,
+                    screen.ids.frequency_shift_limit.ids.label_field.text
+                ),
+                (
+                    screen.ids.damping_limit,
+                    screen.ids.damping_limit.ids.label_field.text
+                ),
+                (
+                    screen.ids.split_frequency_gap,
+                    screen.ids.split_frequency_gap.ids.label_field.text
+                ),
+                (
+                    screen.ids.split_frequency_gap,
+                    screen.ids.split_frequency_gap.ids.label_field.text
+                ),
+                (
+                    screen.ids.peak_intensity_limit,
+                    screen.ids.peak_intensity_limit.ids.label_field.text
+                ),
+                (
+                    screen.ids.peak_matching_tolerance,
+                    screen.ids.peak_matching_tolerance.ids.label_field.text
+                ),
+                (
+                    screen.ids.min_peak_distance,
+                    screen.ids.min_peak_distance.ids.label_field.text
+                ),
+                (
+                    screen.ids.min_peak_prominence,
+                    screen.ids.min_peak_prominence.ids.label_field.text
+                ),
+            ]
 
             manager.current = 'clavius'
             manager.transition.direction = 'down'
@@ -240,12 +319,96 @@ class Panel(MDBoxLayout):
         self.ids.time_label.text = current_time
 
 
+class MetaDataManager:
+
+    def __init__(self, config_manager, path='qct_metadata.json'):
+        self.current = None
+        self.path = Path(path)
+        self.config_manager = config_manager
+
+    def create_default_metadata(self):
+        return {
+            "slots": [
+                {
+                    "id": i,
+                    "name": "Untitled",
+                    "reference": "",
+                    "peaks": [],
+                    "sample": "",
+                    "sample_peaks": [],
+                    "sample_table": "",
+                    "resolution": self.config_manager.get(
+                        'SIET1010',
+                        'resolution',
+                    ),
+                    "low_frequency": self.config_manager.get(
+                        'SIET1010',
+                        'low_frequency',
+                    ),
+                    "high_frequency": self.config_manager.get(
+                        'SIET1010',
+                        'high_frequency'
+                    ),
+                    "frequency_shift": True,
+                    "damping": True,
+                    "peak_splitting": True,
+                    "peak_intensity": True,
+                    "missing_mode": True,
+                    "added_mode": False,
+                    "frequency_shift_limit": 0.2,
+                    "damping_limit": 2.0,
+                    "split_frequency_gap": 250,
+                    "peak_intensity_limit": 2.5,
+                    "peak_matching_tolerance": 50,
+                    "min_peak_distance": 100,
+                    "min_peak_prominence": 10.0,
+                    "status": "IDLE",
+                }
+                for i in range(1, 9)
+            ]
+        }
+
+    def change_default(self, current):
+        self.current = current
+
+    def _load(self):
+        if (
+            not self.path.exists()
+            or self.path.stat().st_size == 0
+        ):
+            with self.path.open('w', encoding='utf-8') as f:
+                json.dump(
+                    self.create_default_metadata(),
+                    f,
+                    indent=4,
+                )
+        with self.path.open('r', encoding='utf-8') as f:
+            data = json.load(f)
+        return data
+
+    def get(self, slot, key):
+        data = self._load()
+        return data['slots'][slot][key]
+
+    def put(self, slot, key, value):
+        data = self._load()
+        data['slots'][slot][key] = value
+        with self.path.open('w', encoding='utf-8') as f:
+            json.dump(data, f, indent=4)
+
+
 class Navigator(MDScreenManager):
     def __init__(self, app, **kwargs):
         super().__init__(**kwargs)
         self.app = app
         self.config_manager = ConfigManager()
         self.calculator = Calculator()
+
+        self.settings_caller = None
+
+        self.metadata_manager = MetaDataManager(
+            self.config_manager,
+        )
 
         self.default = self.config_manager.get(
             'SIET1010', 'archive_path', fallback='Archive/SIET1010'
@@ -256,9 +419,20 @@ class Navigator(MDScreenManager):
             if not isinstance(touch, MouseMotionEvent):
                 super().on_touch_down(touch)
 
-    def back(self, direction):
-        self.current = 'home'
+    def back(self, direction, current='home'):
+        self.current = current
         self.transition.direction = direction
+
+    def back_in_settings(self, direction='down', fallback='home'):
+        if self.settings_caller:
+            target = self.settings_caller
+            self.settings_caller = None  # Reset after use
+        else:
+            target = fallback
+
+        self.current = target
+        self.transition.direction = direction
+
 
 
 class Main(MDApp):
@@ -270,6 +444,22 @@ class Main(MDApp):
     BOLD_RED = ColorProperty((0.73, 0.23, 0.23, .5))
     SKY_MIST = ColorProperty((0.55, 0.6, 0.7, 1))
 
+    gpio_pulse_time = 0.2  # seconds, adjustable
+
+    def pulse_gpio(self):
+        if not GPIO_AVAILABLE:
+            print("GPIO unavailable, skipping pulse")
+            return
+
+        try:
+            lgpio.gpio_write(h, GPIO_PIN, 1)
+            threading.Timer(
+                self.gpio_pulse_time,
+                lambda: lgpio.gpio_write(h, GPIO_PIN, 0)
+            ).start()
+
+        except Exception as e:
+            print(f"GPIO pulse failed: {e}")
 
     def on_start(self):
         Window.borderless = True
@@ -279,6 +469,7 @@ class Main(MDApp):
         self._stop_recording.set()
 
     def start_recording(self):
+        self.pulse_gpio()
         self._stop_recording.clear()
         self._recording_thread = threading.Thread(
             target=self.signal_processor.run,
@@ -305,6 +496,7 @@ class Main(MDApp):
         VKeyboard.layout_path = 'keyboards'
         VKeyboard.layout = 'minimal'
         self.signal_processor = SignalProcessor(manager)
+        self.qct = QCT(manager)
         self._stop_recording = threading.Event()
         return manager
 
@@ -313,4 +505,3 @@ if __name__ == '__main__':
     Window.borderless = True
     Window.size = 900, 500
     Main().run()
-

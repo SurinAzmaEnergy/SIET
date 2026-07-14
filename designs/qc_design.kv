@@ -1,0 +1,357 @@
+#: kivy 2.3.1
+
+
+<QCScreen>:
+    name: 'qc'
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDBoxLayout:
+            size_hint: 1, .85
+            md_bg_color: app.STALE_GRAY
+            orientation: 'vertical'
+            spacing: 10
+            padding: 10
+
+            MDBoxLayout:
+                spacing: 10
+
+                MDCard:
+                    size_hint: .25, 1
+                    orientation: 'vertical'
+                    padding: 15
+                    spacing: 15
+
+                    PrimaryButton:
+                        size_hint: 1, .33
+                        text: 'Reference Set'
+                        icon: 'bookmark-check-outline'
+                        font_size: 22
+                        on_release:
+                            root.manager.metadata_manager.change_default(1)
+                            root.manager.current = 'reference_set'
+                            root.manager.transition.direction = 'up'
+
+                    PrimaryButton:
+                        id: slot1_qct
+                        size_hint: 1, .33
+                        text: 'QC Test'
+                        icon: 'ab-testing'
+                        font_size: 22
+                        on_release:
+                            root.manager.metadata_manager.change_default(1)
+                            root.manager.current = 'qc_test'
+                            root.manager.transition.direction = 'up'
+
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        size_hint: 1, .33
+
+                        MonoLabel:
+                            text: 'Reference #1'
+                            color: app.VOID_BLACK
+                            font_size: 20
+
+                        MonoLabel:
+                            id: slot1_name
+                            color: app.VOID_BLACK
+                            font_size: 17
+
+                MDCard:
+                    size_hint: .25, 1
+                    orientation: 'vertical'
+                    padding: 15
+                    spacing: 15
+
+                    PrimaryButton:
+                        size_hint: 1, .33
+                        text: 'Reference Set'
+                        icon: 'bookmark-check-outline'
+                        font_size: 22
+                        on_release:
+                            root.manager.metadata_manager.change_default(2)
+                            root.manager.current = 'reference_set'
+                            root.manager.transition.direction = 'up'
+
+                    PrimaryButton:
+                        id: slot2_qct
+                        size_hint: 1, .33
+                        text: 'QC Test'
+                        icon: 'ab-testing'
+                        font_size: 22
+                        on_release:
+                            root.manager.metadata_manager.change_default(2)
+                            root.manager.current = 'qc_test'
+                            root.manager.transition.direction = 'up'
+
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        size_hint: 1, .33
+
+                        MonoLabel:
+                            text: 'Reference #2'
+                            color: app.VOID_BLACK
+                            font_size: 20
+
+                        MonoLabel:
+                            id: slot2_name
+                            color: app.VOID_BLACK
+                            font_size: 17
+
+                MDCard:
+                    size_hint: .25, 1
+                    orientation: 'vertical'
+                    padding: 15
+                    spacing: 15
+
+                    PrimaryButton:
+                        size_hint: 1, .33
+                        text: 'Reference Set'
+                        icon: 'bookmark-check-outline'
+                        font_size: 22
+                        on_release:
+                            root.manager.metadata_manager.change_default(3)
+                            root.manager.current = 'reference_set'
+                            root.manager.transition.direction = 'up'
+
+                    PrimaryButton:
+                        id: slot3_qct
+                        size_hint: 1, .33
+                        text: 'QC Test'
+                        icon: 'ab-testing'
+                        font_size: 22
+                        on_release:
+                            root.manager.metadata_manager.change_default(3)
+                            root.manager.current = 'qc_test'
+                            root.manager.transition.direction = 'up'
+
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        size_hint: 1, .33
+
+                        MonoLabel:
+                            text: 'Reference #3'
+                            color: app.VOID_BLACK
+                            font_size: 20
+
+                        MonoLabel:
+                            id: slot3_name
+                            color: app.VOID_BLACK
+                            font_size: 17
+
+                MDCard:
+                    size_hint: .25, 1
+                    orientation: 'vertical'
+                    padding: 15
+                    spacing: 15
+
+                    PrimaryButton:
+                        size_hint: 1, .33
+                        text: 'Reference Set'
+                        icon: 'bookmark-check-outline'
+                        font_size: 22
+                        on_release:
+                            root.manager.metadata_manager.change_default(4)
+                            root.manager.current = 'reference_set'
+                            root.manager.transition.direction = 'up'
+
+                    PrimaryButton:
+                        id: slot4_qct
+                        size_hint: 1, .33
+                        text: 'QC Test'
+                        icon: 'ab-testing'
+                        font_size: 22
+                        on_release:
+                            root.manager.metadata_manager.change_default(4)
+                            root.manager.current = 'qc_test'
+                            root.manager.transition.direction = 'up'
+
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        size_hint: 1, .33
+
+                        MonoLabel:
+                            text: 'Reference #4'
+                            color: app.VOID_BLACK
+                            font_size: 20
+
+                        MonoLabel:
+                            id: slot4_name
+                            color: app.VOID_BLACK
+                            font_size: 17
+
+            MDBoxLayout:
+                spacing: 10
+
+                MDCard:
+                    size_hint: .25, 1
+                    orientation: 'vertical'
+                    padding: 15
+                    spacing: 15
+
+                    PrimaryButton:
+                        size_hint: 1, .33
+                        text: 'Reference Set'
+                        icon: 'bookmark-check-outline'
+                        font_size: 22
+                        on_release:
+                            root.manager.metadata_manager.change_default(5)
+                            root.manager.current = 'reference_set'
+                            root.manager.transition.direction = 'up'
+
+                    PrimaryButton:
+                        id: slot5_qct
+                        size_hint: 1, .33
+                        text: 'QC Test'
+                        icon: 'ab-testing'
+                        font_size: 22
+                        on_release:
+                            root.manager.metadata_manager.change_default(5)
+                            root.manager.current = 'qc_test'
+                            root.manager.transition.direction = 'up'
+
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        size_hint: 1, .33
+
+                        MonoLabel:
+                            text: 'Reference #5'
+                            color: app.VOID_BLACK
+                            font_size: 20
+
+                        MonoLabel:
+                            id: slot5_name
+                            color: app.VOID_BLACK
+                            font_size: 17
+
+                MDCard:
+                    size_hint: .25, 1
+                    orientation: 'vertical'
+                    padding: 15
+                    spacing: 15
+
+                    PrimaryButton:
+                        size_hint: 1, .33
+                        text: 'Reference Set'
+                        icon: 'bookmark-check-outline'
+                        font_size: 22
+                        on_release:
+                            root.manager.metadata_manager.change_default(6)
+                            root.manager.current = 'reference_set'
+                            root.manager.transition.direction = 'up'
+
+                    PrimaryButton:
+                        id: slot6_qct
+                        size_hint: 1, .33
+                        text: 'QC Test'
+                        icon: 'ab-testing'
+                        font_size: 22
+                        on_release:
+                            root.manager.metadata_manager.change_default(6)
+                            root.manager.current = 'qc_test'
+                            root.manager.transition.direction = 'up'
+
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        size_hint: 1, .33
+
+                        MonoLabel:
+                            text: 'Reference #6'
+                            color: app.VOID_BLACK
+                            font_size: 20
+
+                        MonoLabel:
+                            id: slot6_name
+                            color: app.VOID_BLACK
+                            font_size: 17
+
+                MDCard:
+                    size_hint: .25, 1
+                    orientation: 'vertical'
+                    padding: 15
+                    spacing: 15
+
+                    PrimaryButton:
+                        size_hint: 1, .33
+                        text: 'Reference Set'
+                        icon: 'bookmark-check-outline'
+                        font_size: 22
+                        on_release:
+                            root.manager.metadata_manager.change_default(7)
+                            root.manager.current = 'reference_set'
+                            root.manager.transition.direction = 'up'
+
+                    PrimaryButton:
+                        id: slot7_qct
+                        size_hint: 1, .33
+                        text: 'QC Test'
+                        icon: 'ab-testing'
+                        font_size: 22
+                        on_release:
+                            root.manager.metadata_manager.change_default(7)
+                            root.manager.current = 'qc_test'
+                            root.manager.transition.direction = 'up'
+
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        size_hint: 1, .33
+
+                        MonoLabel:
+                            text: 'Reference #7'
+                            color: app.VOID_BLACK
+                            font_size: 20
+
+                        MonoLabel:
+                            id: slot7_name
+                            color: app.VOID_BLACK
+                            font_size: 17
+
+                MDCard:
+                    size_hint: .25, 1
+                    orientation: 'vertical'
+                    padding: 15
+                    spacing: 15
+
+                    PrimaryButton:
+                        size_hint: 1, .33
+                        text: 'Reference Set'
+                        icon: 'bookmark-check-outline'
+                        font_size: 22
+                        on_release:
+                            root.manager.metadata_manager.change_default(8)
+                            root.manager.current = 'reference_set'
+                            root.manager.transition.direction = 'up'
+
+                    PrimaryButton:
+                        id: slot8_qct
+                        size_hint: 1, .33
+                        text: 'QC Test'
+                        icon: 'ab-testing'
+                        font_size: 22
+                        on_release:
+                            root.manager.metadata_manager.change_default(8)
+                            root.manager.current = 'qc_test'
+                            root.manager.transition.direction = 'up'
+
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        size_hint: 1, .33
+
+                        MonoLabel:
+                            text: 'Reference #8'
+                            color: app.VOID_BLACK
+                            font_size: 20
+
+                        MonoLabel:
+                            id: slot8_name
+                            color: app.VOID_BLACK
+                            font_size: 17
+
+        Panel:
+            left_icon: 'arrow-right'
+            left_label: 'Back'
+            left_action: lambda: root.manager.back('left')
+            right_label: 'Settings'
+            right_icon: 'cog-outline'
+            right_action: root.open_general_settings

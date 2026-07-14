@@ -1,0 +1,99 @@
+#: kivy 2.3.1
+
+
+<QCTestScreen>:
+    name: 'qc_test'
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDBoxLayout:
+            size_hint: 1, .1
+            md_bg_color: app.STALE_BLUE
+            padding: 20, 0
+
+            MonoLabel:
+                id: slot_id
+                halign: 'left'
+
+            MonoLabel:
+                id: slot_name
+                halign: 'right'
+
+        MDBoxLayout:
+            size_hint: 1, .75
+            md_bg_color: app.STALE_GRAY
+            padding: 10
+            spacing: 10
+
+            MDBoxLayout:
+                size_hint: .8, 1
+                orientation: 'vertical'
+                spacing: 10
+
+                MDCard:
+                    id: container
+                    size_hint: 1, .7
+                    padding: 10
+
+                    MatplotFigure:
+                        id: qc_plot
+                        size_hint: 1, 1
+
+            MDBoxLayout:
+                size_hint: .2, 1
+                orientation: 'vertical'
+                spacing: 10
+                padding: 0, 5
+
+                MDCard:
+                    id: indicator
+                    size_hint: 1, .32
+
+                    MonoLabel:
+                        id: indicator_text
+                        size_hint: 1, 1
+                        text: "IDLE"
+                        color: app.VOID_BLACK
+
+                MDSeparator
+
+                PrimaryButton:
+                    id: set_test
+                    size_hint: 1, .17
+                    text: 'Set Test'
+                    icon: 'target'
+                    font_size: 18
+                    on_release: root.set_test()
+
+                PrimaryButton:
+                    id: qc_export
+                    size_hint: 1, .17
+                    text: 'Export'
+                    icon: 'export'
+                    font_size: 18
+                    on_release: root.show_save_dialog()
+
+                PrimaryButton:
+                    id: qct_toggle_btn
+                    size_hint: 1, .17
+                    text: 'Show Table'
+                    icon: 'button-pointer'
+                    font_size: 18
+                    on_release: root.toggle()
+
+                PrimaryButton:
+                    id: qc_start
+                    size_hint: 1, .17
+                    text: 'Start'
+                    icon: 'play-box-outline'
+                    font_size: 18
+                    on_release: root.start()
+
+        Panel:
+            left_icon: 'arrow-up'
+            left_label: 'Back'
+            left_action: lambda: root.manager.back('down', current='qc')
+            right_label: 'QC Settings'
+            right_icon: 'cog-outline'
+            right_action: root.open_qc_settings

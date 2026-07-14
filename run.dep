@@ -1,7 +1,7 @@
 #!/bin/bash
 
 while true; do
-    cd /home/pi/SIET1010/
+    cd /home/pi/SIET/
     source venv/bin/activate
     python main.py
     exit_code=$?

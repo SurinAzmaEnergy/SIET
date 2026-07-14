@@ -339,6 +339,9 @@ class SignalProcessor:
                 else np.array([])
             )
 
+            # This is just for QCT access!
+            self.peaks_for_qct = peaks_idx
+
             Clock.schedule_once(
                 lambda dt: callback(True, post_trigger, peaks)
             )
@@ -1481,3 +1484,23 @@ class Calculator:
                 "dynamic_shear_modulus_output": "Invalid",
                 "poisson_ratio_output": "Invalid",
             }
+
+    @staticmethod
+    def pipe(**args):
+        pass
+
+    @staticmethod
+    def gw(**args):
+        pass
+
+
+class QCT:
+    def __init__(self, manager: object):
+        self.manager = manager
+
+    def plot(self):
+        fig, ax = plt.subplots(layout="constrained")
+        ax.grid()
+        ax.set_xlabel("Frequency (kHz)", fontsize=10)
+        ax.set_ylabel("Amplitude", fontsize=10)
+        return fig
