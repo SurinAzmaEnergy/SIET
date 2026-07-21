@@ -715,7 +715,7 @@ class ModulusScreen(MDScreen):
 
     def gw_calculation(self):
         inputs = {
-            'estimation_approach': self.ids.gw_approach.ids.label_field.text,
+            # 'estimation_approach': self.ids.gw_approach.ids.label_field.text,
 
             'materials_type': self.gw_choice,
 
@@ -723,11 +723,12 @@ class ModulusScreen(MDScreen):
             'core_diameter': self.ids.gw_core_diameter.ids.label_field.text,
             'thickness': self.ids.gw_thickness.ids.label_field.text,
             'mass': self.ids.gw_mass.ids.label_field.text,
-            'frequency': self.ids.gw_mass.ids.label_field.text,
+            'frequency': self.ids.gw_frequency.ids.label_field.text,
             'poisson_ratio': self.ids.gw_poisson_ratio.ids.label_field.text,
         }
 
-        estimation_approach = inputs["estimation_approach"]
+        estimation_approach = "1" # Approach is always 1!
+
         materials_type = inputs["materials_type"]
 
         Do = float(inputs["outer_diameter"])
@@ -913,7 +914,7 @@ class ModulusScreen(MDScreen):
             else:
                 hardness_grade = "No Defined Range!"
 
-        Density = density / 1000
+        Density = (density / 1000) / 1000
 
         self.ids.gw_young_modulus_output.ids.label_field.text = f'{E:.4f}'
         self.ids.gw_hardness_grade.ids.label_field.text = f'{hardness_grade}'

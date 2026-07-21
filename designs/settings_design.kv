@@ -11,10 +11,17 @@
     MDBoxLayout:
         spacing: 10
 
-        MDTextField:
+        EntryBox:
+            # id: hour_field
+            # mode: 'line'
+            # hint_text: 'Hour'
+
             id: hour_field
-            mode: 'line'
-            hint_text: 'Hour'
+            label: 'Hour ='
+            unit: ''
+            dialog_title: 'Hour:'
+            lower_limit: 0
+            upper_limit: 23
 
         MDLabel:
             size_hint: .1, 1
@@ -22,9 +29,16 @@
             text: ':'
 
         MDTextField:
+            # id: minute_field
+            # mode: 'line'
+            # hint_text: 'Minute'
+
             id: minute_field
-            mode: 'line'
-            hint_text: 'Minute'
+            label: 'Minute ='
+            unit: ''
+            dialog_title: 'Minute:'
+            lower_limit: 0
+            upper_limit: 59
 
         MDLabel:
             size_hint: .1, 1
@@ -32,9 +46,16 @@
             text: ':'
 
         MDTextField:
-            id: second_field
-            mode: 'line'
-            hint_text: 'Second'
+            # id: second_field
+            # mode: 'line'
+            # hint_text: 'Second'
+
+            id: minute_field
+            label: 'Minute ='
+            unit: ''
+            dialog_title: 'Minute:'
+            lower_limit: 0
+            upper_limit: 59
 
 
 <SetDateContent>:

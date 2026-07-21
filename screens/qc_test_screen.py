@@ -136,6 +136,24 @@ class QCTestScreen(MDScreen):
             self.ids.qc_plot.figure = test_figure
             return
 
+        resolution = self.manager.metadata_manager.get(
+            self.slot_id-1,
+            'resolution'
+        )
+        low_frequency = self.manager.metadata_manager.get(
+            self.slot_id-1,
+            'low_frequency'
+        )
+        high_frequency = self.manager.metadata_manager.get(
+            self.slot_id-1,
+            'high_frequency'
+        )
+
+        info = (
+            f"Resolution: {resolution} Hz\n"
+            f"Range: {low_frequency} - {high_frequency} Hz"
+        )
+
         # Extract test data from the test figure
         test_ax = test_figure.axes[0]
         test_line = test_ax.lines[0]
@@ -202,6 +220,23 @@ class QCTestScreen(MDScreen):
         self.ax.grid(True, alpha=0.3)
         self.ax.set_xlabel("Frequency (Hz)", fontsize=13)
         self.ax.set_ylabel("Amplitude", fontsize=13)
+
+        self.ax.text(
+            # RIGHT, TOP
+            1-0.02, 1-0.04,
+            info,
+            transform=self.ax.transAxes,
+            ha="right",
+            va="top",
+            fontsize=10,
+            multialignment="left",
+            bbox=dict(
+                boxstyle="round,pad=0.5",
+                facecolor="white",
+                edgecolor="gray",
+                alpha=0.60,
+            ),
+        )
 
         # Remove tight_layout() to maintain original layout
         # Just refresh the canvas
@@ -285,6 +320,7 @@ class QCTestScreen(MDScreen):
             label='Reference',
             linewidth=1
         )
+
         self.ax.scatter(
             self.frequency[peaks_idx],
             self.amplitude[peaks_idx],
@@ -294,6 +330,28 @@ class QCTestScreen(MDScreen):
             s=100,
             label='Reference Peaks',
             linewidth=1
+        )
+
+        info = (
+            f"Resolution: {resolution} Hz\n"
+            f"Range: {low_frequency} - {high_frequency} Hz"
+        )
+
+        self.ax.text(
+            # RIGHT, TOP
+            1-0.02, 1-0.04,
+            info,
+            transform=self.ax.transAxes,
+            ha="right",
+            va="top",
+            fontsize=10,
+            multialignment="left",
+            bbox=dict(
+                boxstyle="round,pad=0.5",
+                facecolor="white",
+                edgecolor="gray",
+                alpha=0.60,
+            ),
         )
 
         self.ax.grid(True, alpha=0.3)

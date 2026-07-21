@@ -207,7 +207,7 @@ class EntryBox(MDBoxLayout):
                 ]
             elif tab == 'GW':
                 clavius.fields = [
-                    (screen.ids.gw_approach, screen.ids.gw_approach.ids.label_field.text),
+                    # (screen.ids.gw_approach, screen.ids.gw_approach.ids.label_field.text),
                     (screen.ids.gw_outer_diameter, screen.ids.gw_outer_diameter.ids.label_field.text),
                     (screen.ids.gw_core_diameter, screen.ids.gw_core_diameter.ids.label_field.text),
                     (screen.ids.gw_thickness, screen.ids.gw_thickness.ids.label_field.text),
@@ -262,6 +262,20 @@ class EntryBox(MDBoxLayout):
 
             manager.current = 'clavius'
             manager.transition.direction = 'down'
+
+        print(screen_name)
+        if screen_name == 'general_settings':
+            clavius = manager.get_screen('clavius')
+            clavius.general_settings = True
+            clavius.active_tab = self.label[:-2]
+
+            print(screen.ids.time_dialog)
+
+            clavius.fields = [
+            ]
+
+            # manager.current = 'clavius'
+            # manager.transition.direction = 'down'
 
 
 class ConfigManager:
@@ -327,6 +341,18 @@ class MetaDataManager:
         self.config_manager = config_manager
 
     def create_default_metadata(self):
+
+        all_pass = self.config_manager.get('SIET1010', 'all_pass')
+
+        print(all_pass)
+
+        if all_pass:
+            low_frequency = 0.02
+            high_frequency = 24.0
+        else:
+            low_frequency = self.config_manager.get('SIET1010', 'low_frequency')
+            high_frequency = self.config_manager.get('SIET1010', 'high_frequency')
+
         return {
             "slots": [
                 {
@@ -341,14 +367,8 @@ class MetaDataManager:
                         'SIET1010',
                         'resolution',
                     ),
-                    "low_frequency": self.config_manager.get(
-                        'SIET1010',
-                        'low_frequency',
-                    ),
-                    "high_frequency": self.config_manager.get(
-                        'SIET1010',
-                        'high_frequency'
-                    ),
+                    "low_frequency": low_frequency,
+                    "high_frequency": high_frequency,
                     "frequency_shift": True,
                     "damping": True,
                     "peak_splitting": True,
@@ -478,8 +498,9 @@ class Main(MDApp):
         )
         self._recording_thread.start()
 
-    def update_ui(self, success, signal, peaks, importing=False):
-        self.main_peak = peaks[0]
+    def update_ui(self, success, signal, peaks, importing=False, timeout=False):
+        if len(signal) > 0 and len(peaks) > 0:
+            self.main_peak = peaks[0]
         home_screen = self.root.get_screen('home')
         if importing:
             home_screen.calculation_btn.disabled = False

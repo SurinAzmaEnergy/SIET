@@ -44,7 +44,9 @@ class HomeScreen(MDScreen):
                 else:
                     widget.text = f"{label:<15} --- {'':<2}kHz"
 
-    def start_stop(self, success):
+    def start_stop(self, success, timeout=False):
+
+
         if self.recording:
             self.update_start_stop_button(
                 'Start',
@@ -78,6 +80,15 @@ class HomeScreen(MDScreen):
             self.manager.app.start_recording()
 
         self.recording = not self.recording
+
+        if timeout:
+            self.update_start_stop_button(
+                'Start',
+                'microphone-outline',
+                self.manager.app.PURE_LIGHT,
+            )
+            self.archive_btn.disabled = False
+            self.settings_btn.disabled = False
 
     def update_start_stop_button(
         self,
@@ -120,4 +131,3 @@ class HomeScreen(MDScreen):
             subprocess.run(["sudo", "reboot"], check=True)
         except subprocess.CalledProcessError as e:
             print(f"Error: {e}")
-

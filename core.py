@@ -62,6 +62,27 @@ class SignalProcessor:
         """Plot FFT spectrum with detected peaks."""
         fig, ax = plt.subplots(layout="constrained")
 
+        resolution = self.manager.config_manager.get(
+            'SIET1010',
+            'resolution'
+        )
+
+        low_frequency = self.manager.config_manager.get(
+            'SIET1010',
+            'low_frequency'
+        )
+        high_frequency = self.manager.config_manager.get(
+            'SIET1010',
+            'high_frequency'
+        )
+
+        print(resolution, low_frequency, high_frequency)
+
+        info = (
+            f"Resolution: {resolution} Hz\n"
+            f"Range: {low_frequency} - {high_frequency} Hz"
+        )
+
         peak_freqs = self.fft_frequencies[self.peaks]
         peak_amps = self.fft_magnitude[self.peaks]
 
@@ -78,6 +99,22 @@ class SignalProcessor:
             edgecolors="red",
             marker="s",
             s=100,
+        )
+        ax.text(
+            # RIGHT, TOP
+            1-0.02, 1-0.04,
+            info,
+            transform=ax.transAxes,
+            ha="right",
+            va="top",
+            fontsize=10,
+            multialignment="left",
+            bbox=dict(
+                boxstyle="round,pad=0.5",
+                facecolor="white",
+                edgecolor="gray",
+                alpha=0.60,
+            ),
         )
 
         ax.grid()
@@ -347,6 +384,11 @@ class SignalProcessor:
             )
 
             return True
+
+        except TimeoutError:
+            Clock.schedule_once(
+                lambda dt: callback(False, [], [], timeout=True)
+            )
 
         finally:
             if stream is not None:

@@ -42,11 +42,19 @@
 
                 PrimaryButton:
                     id: set_ref
-                    size_hint: 1, .4
+                    size_hint: 1, .2
                     text: 'Set Reference'
                     icon: 'target'
                     font_size: 18
                     on_release: root.set_reference()
+
+                PrimaryButton:
+                    id: reset_slot
+                    size_hint: 1, .2
+                    text: 'Reset'
+                    icon: 'broom'
+                    font_size: 18
+                    on_release: root.open_reset_slot_dialog()
 
                 PrimaryButton:
                     id: ref_export

@@ -10,6 +10,8 @@ from kivymd.uix.textfield import MDTextField
 from kivy.properties import StringProperty
 from kivymd.uix.tab.tab import MDTabs
 
+print(dir(MDFloatingActionButton))
+
 
 class Tab(MDFloatLayout, MDTabsBase):
     '''Class implementing content for a tab.'''
@@ -56,6 +58,7 @@ class Clavius(MDScreen):
         super().__init__(**kwargs)
         self.rel = {}
         self.qct = None
+        self.general_settings = None
 
     def show_main_peak(self):
         main_peak = self.manager.app.main_peak / 1000
@@ -111,7 +114,7 @@ class Clavius(MDScreen):
             )
 
             field = ClaviusField(
-                text=value
+                text=value,
             )
 
             self.rel[the_field] = field

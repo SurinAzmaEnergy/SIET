@@ -30,6 +30,7 @@ class ReferenceSetScreen(MDScreen):
             print('It is imported, but Not started')
             self.ids.set_ref.disabled = True
             self.ids.ref_export.disabled = True
+            self.ids.reset_slot.disabled = False
         elif started:
             print('Not imported, but it is started')
             self.ids.set_ref.disabled = False
@@ -38,6 +39,7 @@ class ReferenceSetScreen(MDScreen):
             print('Not imported, Not started')
             self.ids.set_ref.disabled = True
             self.ids.ref_export.disabled = True
+            self.ids.reset_slot.disabled = True
 
     def display_slot_id(self):
         self.slot_id = self.manager.metadata_manager.current
@@ -174,6 +176,12 @@ class ReferenceSetScreen(MDScreen):
             'SIET1010',
             'resolution'
         )
+
+        all_pass = self.manager.config_manager.get(
+            'SIET1010',
+            'all_pass'
+        )
+
         low_frequency = self.manager.config_manager.get(
             'SIET1010',
             'low_frequency'
@@ -205,21 +213,42 @@ class ReferenceSetScreen(MDScreen):
             'reference',
             full_path,
         )
+
         self.manager.metadata_manager.put(
             self.slot_id-1,
             'resolution',
             resolution,
         )
-        self.manager.metadata_manager.put(
-            self.slot_id-1,
-            'high_frequency',
-            high_frequency,
-        )
-        self.manager.metadata_manager.put(
-            self.slot_id-1,
-            'low_frequency',
-            low_frequency,
-        )
+
+        all_pass = all_pass == 'True'
+
+        if all_pass:
+            print('All Pass is True!')
+            self.manager.metadata_manager.put(
+                self.slot_id-1,
+                'low_frequency',
+                0.02,
+            )
+            self.manager.metadata_manager.put(
+                self.slot_id-1,
+                'high_frequency',
+                24.0,
+            )
+        else:
+            print('All Pass is NOT True!')
+            print(low_frequency)
+            print(high_frequency)
+            self.manager.metadata_manager.put(
+                self.slot_id-1,
+                'low_frequency',
+                low_frequency,
+            )
+            self.manager.metadata_manager.put(
+                self.slot_id-1,
+                'high_frequency',
+                high_frequency,
+            )
+
         self.manager.metadata_manager.put(
             self.slot_id-1,
             'peaks',
@@ -245,7 +274,33 @@ class ReferenceSetScreen(MDScreen):
 
         success_dialog.open()
 
+        self.ids.reset_slot.disabled = False
+
     def import_reference(self):
+
+        resolution = self.manager.metadata_manager.get(
+            self.slot_id-1,
+            'resolution'
+        )
+
+        low_frequency = self.manager.metadata_manager.get(
+            self.slot_id-1,
+            'low_frequency'
+        )
+
+        high_frequency = self.manager.metadata_manager.get(
+            self.slot_id-1,
+            'high_frequency'
+        )
+
+        print(f'Resolution: {resolution}')
+        print(f'Low Frequency: {low_frequency}')
+        print(f'High Frequency: {high_frequency}')
+
+        info = (
+            f"Resolution: {resolution} Hz\n"
+            f"Range: {low_frequency} - {high_frequency} Hz"
+        )
 
         ref_path = self.manager.metadata_manager.get(
             self.slot_id-1,
@@ -284,6 +339,23 @@ class ReferenceSetScreen(MDScreen):
             s=100,
         )
 
+        ax.text(
+            # RIGHT, TOP
+            1-0.02, 1-0.04,
+            info,
+            transform=ax.transAxes,
+            ha="right",
+            va="top",
+            fontsize=10,
+            multialignment="left",
+            bbox=dict(
+                boxstyle="round,pad=0.5",
+                facecolor="white",
+                edgecolor="gray",
+                alpha=0.60,
+            ),
+        )
+
         ax.grid()
         ax.set_xlabel("Frequency (Hz)", fontsize=13)
         ax.set_ylabel("Amplitude", fontsize=13)
@@ -291,3 +363,150 @@ class ReferenceSetScreen(MDScreen):
         self.ids.ref_plot.figure = fig
 
         return True
+
+    def reset_slot(self):
+        self.slot_id = self.manager.metadata_manager.current
+
+        self.manager.metadata_manager.put(
+            self.slot_id - 1,
+            'reference',
+            ''
+        )
+        self.manager.metadata_manager.put(
+            self.slot_id - 1,
+            'peaks',
+            ''
+        )
+        self.manager.metadata_manager.put(
+            self.slot_id - 1,
+            'sample',
+            ''
+        )
+        self.manager.metadata_manager.put(
+            self.slot_id - 1,
+            'sample_peaks',
+            ''
+        )
+        self.manager.metadata_manager.put(
+            self.slot_id - 1,
+            'sample_table',
+            ''
+        )
+        self.manager.metadata_manager.put(
+            self.slot_id - 1,
+            'name',
+            ''
+        )
+        self.manager.metadata_manager.put(
+            self.slot_id - 1,
+            'status',
+            ''
+        )
+        self.manager.metadata_manager.put(
+            self.slot_id - 1,
+            'status',
+            'IDLE'
+        )
+        self.manager.metadata_manager.put(
+            self.slot_id - 1,
+            'frequency_shift',
+            True
+        )
+        self.manager.metadata_manager.put(
+            self.slot_id - 1,
+            'damping',
+            True
+        )
+        self.manager.metadata_manager.put(
+            self.slot_id - 1,
+            'peak_splitting',
+            True
+        )
+        self.manager.metadata_manager.put(
+            self.slot_id - 1,
+            'peak_intensity',
+            True
+        )
+        self.manager.metadata_manager.put(
+            self.slot_id - 1,
+            'missing_mode',
+            True
+        )
+        self.manager.metadata_manager.put(
+            self.slot_id - 1,
+            'added_mode',
+            False
+        )
+        self.manager.metadata_manager.put(
+            self.slot_id - 1,
+            'frequency_shift_limit',
+            0.2
+        )
+        self.manager.metadata_manager.put(
+            self.slot_id - 1,
+            'damping_limit',
+            2.0
+        )
+        self.manager.metadata_manager.put(
+            self.slot_id - 1,
+            'split_frequency_gap',
+            250
+        )
+        self.manager.metadata_manager.put(
+            self.slot_id - 1,
+            'peak_intensity_limit',
+            2.5
+        )
+        self.manager.metadata_manager.put(
+            self.slot_id - 1,
+            'peak_matching_tolerance',
+            50
+        )
+        self.manager.metadata_manager.put(
+            self.slot_id - 1,
+            'min_peak_distance',
+            100
+        )
+        self.manager.metadata_manager.put(
+            self.slot_id - 1,
+            'min_peak_prominence',
+            10.0
+        )
+
+        slot_path = Path(f'Archive/QCT/SLOT{self.slot_id}/')
+
+        if slot_path.exists():
+            for item in slot_path.iterdir():
+                if item.is_file() or item.is_symlink():
+                    item.unlink()
+
+        self.ids.ref_plot.figure = self.manager.app.qct.plot()
+
+        self.reset_slot_dialog.dismiss()
+
+    def open_reset_slot_dialog(self):
+        self.reset_slot_dialog = MDDialog(
+            title='Warning!',
+            type='custom',
+            text=(
+                "This will permanently delete both the reference and test data "
+                "for this slot. This action cannot be undone."
+            ),
+            buttons=[
+                MDFlatButton(
+                    text='Cancel',
+                    # Only available KivyMD 1.2.0!
+                    text_color=self.theme_cls.primary_color,
+                    theme_text_color='Custom',
+                    on_release=lambda _: self.reset_slot_dialog.dismiss()
+                ),
+                MDFlatButton(
+                    text='Reset',
+                    # Only available KivyMD 1.2.0!
+                    text_color=self.theme_cls.error_color,
+                    theme_text_color='Custom',
+                    on_release=lambda _: self.reset_slot()
+                ),
+            ]
+        )
+        self.reset_slot_dialog.open()
