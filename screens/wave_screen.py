@@ -30,12 +30,14 @@ class WaveScreen(MDScreen):
                     text='CANCEL',
                     text_color=self.theme_cls.error_color,
                     theme_text_color='Custom',
+                    font_size="20sp",
                     on_release=lambda _: self.save_dialog.dismiss()
                 ),
                 MDFlatButton(
                     text='OK',
                     text_color=self.theme_cls.primary_color,
                     theme_text_color='Custom',
+                    font_size="20sp",
                     on_release=lambda _: self.save(
                         self.save_dialog.content_cls.text
                     )
@@ -57,4 +59,3 @@ class WaveScreen(MDScreen):
             fmt='%.5f' # It might reduce the accuracy!
         )
         self.save_dialog.dismiss()
-

@@ -749,6 +749,7 @@ class QCTestScreen(MDScreen):
                 text='OK',
                 # Only available KivyMD 1.2.0!
                 text_color=self.theme_cls.primary_color,
+                font_size="20sp",
                 theme_text_color='Custom',
                 on_release=lambda _: success_dialog.dismiss()
             )]
@@ -866,12 +867,14 @@ class QCTestScreen(MDScreen):
                     text="CANCEL",
                     text_color=self.theme_cls.error_color,
                     theme_text_color="Custom",
+                    font_size="20sp",
                     on_release=lambda _: self.save_dialog.dismiss(),
                 ),
                 MDFlatButton(
                     text="OK",
                     text_color=self.theme_cls.primary_color,
                     theme_text_color="Custom",
+                    font_size="20sp",
                     on_release=lambda _: self.save(self.save_dialog.content_cls.text),
                 ),
             ],

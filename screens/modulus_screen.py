@@ -152,12 +152,14 @@ class ModulusScreen(MDScreen):
                     text='CANCEL',
                     text_color=self.theme_cls.error_color,
                     theme_text_color='Custom',
+                    font_size="20sp",
                     on_release=lambda _: self.save_dialog.dismiss()
                 ),
                 MDFlatButton(
                     text='OK',
                     text_color=self.theme_cls.primary_color,
                     theme_text_color='Custom',
+                    font_size="20sp",
                     on_release=lambda _: self.save(
                         self.save_dialog.content_cls.text
                     )
@@ -548,6 +550,7 @@ class ModulusScreen(MDScreen):
                 buttons=[
                     MDFlatButton(
                         text='OK',
+                        font_size="20sp",
                         on_release=lambda _: self.bar_error_dialog.dismiss()
                     )
                 ]
@@ -616,6 +619,7 @@ class ModulusScreen(MDScreen):
                 buttons=[
                     MDFlatButton(
                         text='OK',
+                        font_size="20sp",
                         on_release=lambda _: self.rod_error_dialog.dismiss()
                     )
                 ]
@@ -673,6 +677,7 @@ class ModulusScreen(MDScreen):
                 buttons=[
                     MDFlatButton(
                         text='OK',
+                        font_size="20sp",
                         on_release=lambda _: self.disc_error_dialog.dismiss()
                     )
                 ]
@@ -762,6 +767,7 @@ class ModulusScreen(MDScreen):
                         buttons=[
                             MDFlatButton(
                                 text='OK',
+                                font_size="20sp",
                                 on_release=lambda _: self.bar_error_dialog.dismiss()
                             )
                         ]
@@ -806,6 +812,8 @@ class ModulusScreen(MDScreen):
                         * 10**-9
                         * Correction_factor
                     )
+
+                    E = E / 1000
 
         elif estimation_approach == "2":
             if ri / ro < 0.2:

@@ -113,12 +113,14 @@ class HomeScreen(MDScreen):
                     text='Cancel',
                     theme_text_color='Custom',
                     md_bg_color=MDApp.get_running_app().BOLD_RED,
+                    font_size="20sp",
                     on_release=lambda _: self.reboot_dialog.dismiss()
                 ),
                 MDFlatButton(
                     text='OK',
                     theme_text_color='Custom',
                     md_bg_color=MDApp.get_running_app().SKY_MIST,
+                    font_size="20sp",
                     on_release=lambda _: self.sudo_reboot()
                 )
             ]

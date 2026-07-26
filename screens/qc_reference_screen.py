@@ -98,19 +98,22 @@ class ReferenceSetScreen(MDScreen):
             pos_hint={'center_x': .5, 'center_y': 0.8},
             content_cls=MDTextField(
                 mode='round',
-                text=self.slot_name
+                text=self.slot_name,
+                font_size="25sp"
             ),
             buttons=[
                 MDFlatButton(
                     text='CANCEL',
                     text_color=self.theme_cls.primary_color,
                     theme_text_color='Custom',
+                    font_size="20sp",
                     on_release=lambda _: self.rename_dialog.dismiss()
                 ),
                 MDFlatButton(
                     text='OK',
                     text_color=self.theme_cls.primary_color,
                     theme_text_color='Custom',
+                    font_size="20sp",
                     on_release=lambda _: self.rename_slot(
                         self.rename_dialog.content_cls.text
                     )
@@ -126,18 +129,24 @@ class ReferenceSetScreen(MDScreen):
             title="File Name:",
             type="custom",
             pos_hint={"center_x": 0.5, "center_y": 0.8},
-            content_cls=MDTextField(text=file_name, icon_left="rename-box-outline"),
+            content_cls=MDTextField(
+                text=file_name,
+                icon_left="rename-box-outline",
+                font_size="25sp",
+            ),
             buttons=[
                 MDFlatButton(
                     text="CANCEL",
                     text_color=self.theme_cls.error_color,
                     theme_text_color="Custom",
+                    font_size="20sp",
                     on_release=lambda _: self.save_dialog.dismiss(),
                 ),
                 MDFlatButton(
                     text="OK",
                     text_color=self.theme_cls.primary_color,
                     theme_text_color="Custom",
+                    font_size="20sp",
                     on_release=lambda _: self.save(self.save_dialog.content_cls.text),
                 ),
             ],
@@ -498,6 +507,7 @@ class ReferenceSetScreen(MDScreen):
                     # Only available KivyMD 1.2.0!
                     text_color=self.theme_cls.primary_color,
                     theme_text_color='Custom',
+                    font_size="20sp",
                     on_release=lambda _: self.reset_slot_dialog.dismiss()
                 ),
                 MDFlatButton(
@@ -505,6 +515,7 @@ class ReferenceSetScreen(MDScreen):
                     # Only available KivyMD 1.2.0!
                     text_color=self.theme_cls.error_color,
                     theme_text_color='Custom',
+                    font_size="20sp",
                     on_release=lambda _: self.reset_slot()
                 ),
             ]

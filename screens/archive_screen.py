@@ -7,6 +7,7 @@ import platform
 import psutil
 import time
 import threading
+from pathlib import Path
 from types import MethodType
 
 import numpy as np
@@ -195,6 +196,7 @@ class ArchiveScreen(MDScreen):
                     # Only available KivyMD 1.2.0!
                     text_color=self.theme_cls.error_color,
                     theme_text_color='Custom',
+                    font_size="20sp",
                     on_release=lambda _: self.create_directory_dialog.dismiss()
                 ),
                 MDFlatButton(
@@ -202,6 +204,7 @@ class ArchiveScreen(MDScreen):
                     # Only available in KivyMD 1.2.0!
                     text_color=self.theme_cls.primary_color,
                     theme_text_color='Custom',
+                    font_size="20sp",
                     on_release=lambda _: self.create_directory()
                 )
             ]
@@ -230,12 +233,14 @@ class ArchiveScreen(MDScreen):
                     text='CANCEL',
                     text_color=self.theme_cls.primary_color,
                     theme_text_color='Custom',
+                    font_size="20sp",
                     on_release=lambda _: self.rename_dialog.dismiss()
                 ),
                 MDFlatButton(
                     text='OK',
                     text_color=self.theme_cls.primary_color,
                     theme_text_color='Custom',
+                    font_size="20sp",
                     on_release=lambda _: self.rename_item(
                         old_path,
                         self.rename_dialog.content_cls.text
@@ -246,7 +251,6 @@ class ArchiveScreen(MDScreen):
         self.rename_dialog.open()
 
     def show_delete_dialog(self):
-        print('Delete!')
         # TODO: This function may need some improvments!
         selected_rows = self.table.get_row_checks()
         if not selected_rows:
@@ -270,6 +274,7 @@ class ArchiveScreen(MDScreen):
                     # Only available KivyMD 1.2.0!
                     text_color=self.theme_cls.error_color,
                     theme_text_color='Custom',
+                    font_size="20sp",
                     on_release=lambda _: self.delete_dialog.dismiss()
                 ),
                 MDFlatButton(
@@ -277,6 +282,7 @@ class ArchiveScreen(MDScreen):
                     # Only available in KivyMD 1.2.0!
                     text_color=self.theme_cls.primary_color,
                     theme_text_color='Custom',
+                    font_size="20sp",
                     on_release=lambda _: self.delete_items()
                 )
             ]
@@ -301,12 +307,14 @@ class ArchiveScreen(MDScreen):
                     text='NO',
                     text_color=self.theme_cls.error_color,
                     theme_text_color='Custom',
+                    font_size="20sp",
                     on_release=lambda _: self.set_default_dialog.dismiss()
                 ),
                 MDFlatButton(
                     text='YES',
                     text_color=self.theme_cls.primary_color,
                     theme_text_color='Custom',
+                    font_size="20sp",
                     on_release=lambda _: self.set_default(default_candidate)
                 )
             ]
@@ -360,6 +368,11 @@ class ArchiveScreen(MDScreen):
     def update_new_folder_button_state(self):
         self.ids.new_folder_button.disabled = not self.can_create_new_folder()
 
+    def is_inside(self, parent_path, child_path):
+        parent = Path(parent_path).resolve()
+        child = Path(child_path).resolve()
+        return parent == child or parent in child.parents
+
     def update_buttons_state(self):
         selected = self.table.get_row_checks()
         num_selected = len(selected)
@@ -379,7 +392,15 @@ class ArchiveScreen(MDScreen):
         if num_selected == 1:
             selected_path = os.path.join(self.current_path, selected[0][0])
             selected_name = selected[0][0]
+
             is_qct = selected_name == "QCT" and os.path.isdir(selected_path)
+            # print(f'Inside rename clause, `is_qct` is {is_qct}!')
+
+            qct_path = os.path.normpath(os.path.join("Archive", "QCT"))
+
+            print(qct_path, selected_path, type(qct_path), type(selected_path))
+
+            print(self.is_inside(qct_path, selected_path))
 
             self.ids.rename_button.disabled = (selected_path == self.manager.default) or is_qct
         else:
@@ -473,6 +494,7 @@ class ArchiveScreen(MDScreen):
                             # Only available KivyMD 1.2.0!
                             text_color=self.theme_cls.error_color,
                             theme_text_color='Custom',
+                            font_size="20sp",
                             on_release=lambda _: self.copy_on_usb_dialog.dismiss()
                         ),
                         OneTimeTriggererFlatbutton(
@@ -480,6 +502,7 @@ class ArchiveScreen(MDScreen):
                             # Only available in KivyMD 1.2.0!
                             text_color=self.theme_cls.primary_color,
                             theme_text_color='Custom',
+                            font_size="20sp",
                             on_release=lambda _: self.copy_items(
                                 self.files_to_copy,
                                 removable_drives[0]['mountpoint']
@@ -499,6 +522,7 @@ class ArchiveScreen(MDScreen):
                     # Only available KivyMD 1.2.0!
                     text_color=self.theme_cls.primary_color,
                     theme_text_color='Custom',
+                    font_size="20sp",
                     on_release=lambda _: self.copy_on_usb_dialog.dismiss()
                 )]
             )
@@ -511,6 +535,7 @@ class ArchiveScreen(MDScreen):
             buttons=[
                 MDFlatButton(
                     text='OK',
+                    font_size="20sp",
                     on_release=lambda _: error_dialog.dismiss()
                 )
             ]
@@ -543,12 +568,14 @@ class ArchiveScreen(MDScreen):
                     text='CANCEL',
                     theme_text_color='Custom',
                     text_color=self.theme_cls.error_color,
+                    font_size="20sp",
                     on_release=lambda _: self.cancel_copy()
                 ),
                 MDFlatButton(
                     text='OK',
                     theme_text_color='Custom',
                     text_color=self.theme_cls.primary_color,
+                    font_size="20sp",
                     on_release=lambda _: self.progress_dialog.dismiss()
                 )
             ]
