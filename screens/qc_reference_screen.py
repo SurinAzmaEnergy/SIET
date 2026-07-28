@@ -351,12 +351,12 @@ class ReferenceSetScreen(MDScreen):
 
         ax.text(
             # RIGHT, TOP
-            1-0.02, 1-0.04,
+            1-0.02, 1-0.045,
             info,
             transform=ax.transAxes,
             ha="right",
             va="top",
-            fontsize=10,
+            fontsize=15,
             multialignment="left",
             bbox=dict(
                 boxstyle="round,pad=0.5",
@@ -367,8 +367,8 @@ class ReferenceSetScreen(MDScreen):
         )
 
         ax.grid()
-        ax.set_xlabel("Frequency (Hz)", fontsize=13)
-        ax.set_ylabel("Amplitude", fontsize=13)
+        ax.set_xlabel("Frequency (Hz)", fontsize=15)
+        ax.set_ylabel("Amplitude", fontsize=15)
 
         self.ids.ref_plot.figure = fig
 

@@ -110,7 +110,7 @@ class SignalProcessor:
         )
         ax.text(
             # RIGHT, TOP
-            1-0.02, 1-0.05,
+            1-0.02, 1-0.045,
             info,
             transform=ax.transAxes,
             ha="right",
