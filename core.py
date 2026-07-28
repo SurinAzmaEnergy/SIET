@@ -54,29 +54,37 @@ class SignalProcessor:
         fig, ax = plt.subplots(layout="constrained")
         ax.plot(self.time_ms, self.normalized_signal)
         ax.grid()
-        ax.set_xlabel("Time (ms)", fontsize=13)
-        ax.set_ylabel("Amplitude", fontsize=13)
+        ax.set_xlabel("Time (ms)", fontsize=15)
+        ax.set_ylabel("Amplitude", fontsize=15)
         return fig
 
     def plot_fft(self) -> plt.Figure:
         """Plot FFT spectrum with detected peaks."""
         fig, ax = plt.subplots(layout="constrained")
 
+        all_pass = self.manager.config_manager.getboolean(
+            "SIET1010",
+            "all_pass"
+        )
+
         resolution = self.manager.config_manager.get(
             'SIET1010',
             'resolution'
         )
 
-        low_frequency = self.manager.config_manager.get(
-            'SIET1010',
-            'low_frequency'
-        )
-        high_frequency = self.manager.config_manager.get(
-            'SIET1010',
-            'high_frequency'
-        )
+        if not all_pass:
+            low_frequency = self.manager.config_manager.get(
+                'SIET1010',
+                'low_frequency'
+            )
+            high_frequency = self.manager.config_manager.get(
+                'SIET1010',
+                'high_frequency'
+            )
+        else:
+            low_frequency = '0.02'
+            high_frequency = '24.00'
 
-        print(resolution, low_frequency, high_frequency)
 
         info = (
             f"Resolution: {resolution} Hz\n"
@@ -102,12 +110,12 @@ class SignalProcessor:
         )
         ax.text(
             # RIGHT, TOP
-            1-0.02, 1-0.04,
+            1-0.02, 1-0.05,
             info,
             transform=ax.transAxes,
             ha="right",
             va="top",
-            fontsize=10,
+            fontsize=15,
             multialignment="left",
             bbox=dict(
                 boxstyle="round,pad=0.5",
@@ -118,8 +126,8 @@ class SignalProcessor:
         )
 
         ax.grid()
-        ax.set_xlabel("Frequency (Hz)", fontsize=13)
-        ax.set_ylabel("Amplitude", fontsize=13)
+        ax.set_xlabel("Frequency (Hz)", fontsize=15)
+        ax.set_ylabel("Amplitude", fontsize=15)
         return fig
 
     # ------------------------------------------------------------------
@@ -1543,6 +1551,6 @@ class QCT:
     def plot(self):
         fig, ax = plt.subplots(layout="constrained")
         ax.grid()
-        ax.set_xlabel("Frequency (kHz)", fontsize=10)
-        ax.set_ylabel("Amplitude", fontsize=10)
+        ax.set_xlabel("Frequency (kHz)", fontsize=15)
+        ax.set_ylabel("Amplitude", fontsize=15)
         return fig

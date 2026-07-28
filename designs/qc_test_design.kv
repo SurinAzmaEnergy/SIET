@@ -55,6 +55,7 @@
                         size_hint: 1, 1
                         text: "IDLE"
                         color: app.VOID_BLACK
+                        font_size: 50
 
                 MDSeparator
 
@@ -63,7 +64,7 @@
                     size_hint: 1, .17
                     text: 'Set Test'
                     icon: 'target'
-                    font_size: 18
+                    font_size: 25
                     on_release: root.set_test()
 
                 PrimaryButton:
@@ -71,7 +72,7 @@
                     size_hint: 1, .17
                     text: 'Export'
                     icon: 'export'
-                    font_size: 18
+                    font_size: 25
                     on_release: root.show_save_dialog()
 
                 PrimaryButton:
@@ -79,7 +80,7 @@
                     size_hint: 1, .17
                     text: 'Show Table'
                     icon: 'button-pointer'
-                    font_size: 18
+                    font_size: 25
                     on_release: root.toggle()
 
                 PrimaryButton:
@@ -87,7 +88,7 @@
                     size_hint: 1, .17
                     text: 'Start'
                     icon: 'play-box-outline'
-                    font_size: 18
+                    font_size: 25
                     on_release: root.start()
 
         Panel:

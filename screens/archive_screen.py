@@ -394,15 +394,14 @@ class ArchiveScreen(MDScreen):
             selected_name = selected[0][0]
 
             is_qct = selected_name == "QCT" and os.path.isdir(selected_path)
-            # print(f'Inside rename clause, `is_qct` is {is_qct}!')
+
+            self.ids.rename_button.disabled = (selected_path == self.manager.default) or is_qct
 
             qct_path = os.path.normpath(os.path.join("Archive", "QCT"))
 
-            print(qct_path, selected_path, type(qct_path), type(selected_path))
+            if self.is_inside(qct_path, selected_path):
+                self.ids.rename_button.disabled = True
 
-            print(self.is_inside(qct_path, selected_path))
-
-            self.ids.rename_button.disabled = (selected_path == self.manager.default) or is_qct
         else:
             self.ids.rename_button.disabled = True
 
@@ -413,6 +412,13 @@ class ArchiveScreen(MDScreen):
             has_qct = any(os.path.basename(row[0]) == "QCT" and os.path.isdir(os.path.join(self.current_path, row[0])) for row in selected)
 
             delete_disabled = has_default or has_qct
+
+            is_qct = selected_name == "QCT" and os.path.isdir(selected_path)
+            qct_path = os.path.normpath(os.path.join("Archive", "QCT"))
+
+            if self.is_inside(qct_path, selected_path):
+                delete_disabled = True
+
         self.ids.delete_button.disabled = delete_disabled
 
         set_default_disabled = True
@@ -421,6 +427,13 @@ class ArchiveScreen(MDScreen):
             item_path = os.path.join(self.current_path, name)
             if os.path.isdir(item_path) and item_path != self.manager.default and name != "QCT":
                 set_default_disabled = False
+
+            is_qct = selected_name == "QCT" and os.path.isdir(selected_path)
+            qct_path = os.path.normpath(os.path.join("Archive", "QCT"))
+
+            if self.is_inside(qct_path, selected_path):
+                set_default_disabled = True
+
         self.ids.set_default_button.disabled = set_default_disabled
 
     @staticmethod

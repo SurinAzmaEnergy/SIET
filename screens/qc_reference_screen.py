@@ -277,6 +277,7 @@ class ReferenceSetScreen(MDScreen):
                 # Only available KivyMD 1.2.0!
                 text_color=self.theme_cls.primary_color,
                 theme_text_color='Custom',
+                font_size="20sp",
                 on_release=lambda _: success_dialog.dismiss()
             )]
         )
