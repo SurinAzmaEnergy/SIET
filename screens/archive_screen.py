@@ -405,6 +405,9 @@ class ArchiveScreen(MDScreen):
 
         delete_disabled = True
         if num_selected > 0:
+            selected_path = os.path.join(self.current_path, selected[0][0])
+            selected_name = selected[0][0]
+
             default_path = self.manager.default
             has_default = any(os.path.join(self.current_path, row[0]) == default_path for row in selected)
             has_qct = any(os.path.basename(row[0]) == "QCT" and os.path.isdir(os.path.join(self.current_path, row[0])) for row in selected)
@@ -421,6 +424,8 @@ class ArchiveScreen(MDScreen):
 
         set_default_disabled = True
         if num_selected == 1:
+            selected_path = os.path.join(self.current_path, selected[0][0])
+            selected_name = selected[0][0]
             name = selected[0][0]
             item_path = os.path.join(self.current_path, name)
             if os.path.isdir(item_path) and item_path != self.manager.default and name != "QCT":
