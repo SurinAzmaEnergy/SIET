@@ -10,8 +10,6 @@ from kivymd.uix.textfield import MDTextField
 from kivy.properties import StringProperty
 from kivymd.uix.tab.tab import MDTabs
 
-print(dir(MDFloatingActionButton))
-
 
 class Tab(MDFloatLayout, MDTabsBase):
     '''Class implementing content for a tab.'''
@@ -58,6 +56,7 @@ class Clavius(MDScreen):
         super().__init__(**kwargs)
         self.rel = {}
         self.qct = None
+        self.date_time = None
         self.general_settings = None
 
     def show_main_peak(self):
@@ -70,7 +69,7 @@ class Clavius(MDScreen):
             print('All children are killed!!')
             self.ids.the_fucking_container.clear_widgets()
 
-        if not self.qct:
+        if self.qct is None and self.date_time is None:
             self.show_main_peak()
 
         md_tabs = MDTabs(
@@ -167,6 +166,10 @@ class Clavius(MDScreen):
             qct_screen = self.manager.get_screen("qc_settings")
             qct_screen.after_clavius = True
             self.manager.current = 'qc_settings'
+            self.manager.transition.direction = 'up'
+        elif self.date_time:
+            general_settings = self.manager.get_screen("general_settings")
+            self.manager.current = 'general_settings'
             self.manager.transition.direction = 'up'
         else:
             self.manager.current = 'modulus'

@@ -130,15 +130,123 @@
                             text: 'Set Date and Time'
 
                     MDBoxLayout:
-                        padding: 20
-                        spacing: 20
+                        # padding: 10
+                        # spacing: 10
                         size_hint: 1, 1
+                        orientation: 'vertical'
 
-                        MonoLabel:
-                            text: 'Under Heavy Construction!'
-                            color: app.VOID_BLACK
+                        MDBoxLayout:
+                            # md_bg_color: app.VIBRANT_GREEN
+                            padding: 0, 0, 20, 0
 
-                MDSeparator
+                            MonoLabel:
+                                text: 'Time'
+                                size_hint: .9, 1
+                                color: app.VOID_BLACK
+
+                            EntryBox:
+                                id: set_hour
+                                label: 'Hour ='
+                                unit: ''
+                                dialog_title: f'Hour:'
+                                lower_limit: 0
+                                upper_limit: 23
+
+                                label_width: False
+                                label_x_size: False
+                                label_opacity: False
+
+                            MonoLabel:
+                                text: ':'
+                                size_hint: .1, 1
+                                color: app.VOID_BLACK
+
+                            EntryBox:
+                                id: set_minute
+                                label: 'Minute ='
+                                unit: ''
+                                dialog_title: f'Minute:'
+                                lower_limit: 0
+                                upper_limit: 60
+
+                                label_width: False
+                                label_x_size: False
+                                label_opacity: False
+
+                            MonoLabel:
+                                text: ':'
+                                size_hint: .1, 1
+                                color: app.VOID_BLACK
+
+                            EntryBox:
+                                id: set_second
+                                label: 'Second ='
+                                unit: ''
+                                dialog_title: f'Second:'
+                                lower_limit: 0
+                                upper_limit: 60
+
+                                label_width: False
+                                label_x_size: False
+                                label_opacity: False
+
+                        MDSeparator
+
+                        MDBoxLayout:
+                            # md_bg_color: app.BOLD_RED
+                            padding: 0, 0, 20, 0
+
+                            MonoLabel:
+                                text: 'Date'
+                                size_hint: .9, 1
+                                color: app.VOID_BLACK
+
+                            EntryBox:
+                                id: set_year
+                                label: 'Year ='
+                                unit: ''
+                                dialog_title: f'Year:'
+                                lower_limit: 0
+                                upper_limit: 60
+
+                                label_width: False
+                                label_x_size: False
+                                label_opacity: False
+
+                            MonoLabel:
+                                text: '/'
+                                size_hint: .1, 1
+                                color: app.VOID_BLACK
+
+                            EntryBox:
+                                id: set_month
+                                label: 'Month ='
+                                unit: ''
+                                dialog_title: f'Month:'
+                                lower_limit: 0
+                                upper_limit: 60
+
+                                label_width: False
+                                label_x_size: False
+                                label_opacity: False
+
+                            MonoLabel:
+                                text: '/'
+                                size_hint: .1, 1
+                                color: app.VOID_BLACK
+
+                            EntryBox:
+                                id: set_day
+                                label: 'Day ='
+                                unit: ''
+                                dialog_title: f'Day:'
+                                lower_limit: 0
+                                upper_limit: 60
+
+                                label_width: False
+                                label_x_size: False
+                                label_opacity: False
+
 
                 MDBoxLayout:
                     size_hint: 1, .6

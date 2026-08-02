@@ -1040,16 +1040,11 @@ class ModulusScreen(MDScreen):
 
         self.ids.damping_plot.figure = fig
 
-        # print(f'Resonance Frequency (f0): {f0:.2f} Hz')
         self.ids.f0_output.ids.label_field.text = f'{f0:.2f}'
-        # print(f'Half-Power Frequencies: {f1:.2f} Hz and {f2:.2f} Hz')
         self.ids.f1_output.ids.label_field.text = f'{f1:.2f}'
         self.ids.f2_output.ids.label_field.text = f'{f2:.2f}'
-        # print(f'Bandwidth (Δf): {delta_f:.2f} Hz')
         self.ids.delta_f.ids.label_field.text = f'{delta_f:.2f}'
-        # print(f'Damping Ratio (ζ): {damping_ratio:.8f}')
         self.ids.df.ids.label_field.text = f'{damping_ratio:.8f}'
-        # print(f'Quality Factor (Q): {quality_factor:.2f}')
         self.ids.quality_factor.ids.label_field.text = f'{quality_factor:.2f}'
 
         self.update_calculation_button_status()

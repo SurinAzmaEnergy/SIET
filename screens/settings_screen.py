@@ -227,7 +227,6 @@ class GeneralSettingsScreen(MDScreen):
         # Step 4: Format for Linux date command
         formatted_time = new_datetime.strftime("%Y-%m-%d %H:%M:%S")
 
-        print(os.system(f"sudo date -s '{formatted_time}'"))
         # Step 5: Set system time using os.system
         os.system(f"sudo date -s '{formatted_time}'")
 
@@ -321,6 +320,7 @@ class GeneralSettingsScreen(MDScreen):
 
         # Step 9: Dismiss dialog
         self.set_date_dialog.dismiss()
+
 
 class AdvancedSettingsScreen(MDScreen):
     def __init__(self, **kwargs):

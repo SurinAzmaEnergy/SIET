@@ -184,7 +184,6 @@ class ArchiveScreen(MDScreen):
         self.set_default_dialog.dismiss()
 
     def show_create_directory_dialog(self):
-        print('Directory')
         self.create_directory_dialog = MDDialog(
             title='New Folder',
             type='custom',
@@ -212,7 +211,6 @@ class ArchiveScreen(MDScreen):
         self.create_directory_dialog.open()
 
     def show_rename_dialog(self):
-        print('Rename')
         selected_rows = self.table.get_row_checks()
         if not selected_rows or len(selected_rows) != 1:
             return

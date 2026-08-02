@@ -53,6 +53,7 @@ class Prompt(MDDialog):
     upper_limit = NumericProperty()
     lower_limit = NumericProperty()
 
+
     def __init__(self, **kwargs):
         self.screen = MDApp.get_running_app().root.get_screen('modulus')
         self.action = kwargs['ok_action']
@@ -149,6 +150,10 @@ class EntryBox(MDBoxLayout):
     is_output = BooleanProperty(False)
     upper_limit = NumericProperty()
     lower_limit = NumericProperty()
+
+    label_opacity = BooleanProperty(True)
+    label_width = BooleanProperty(True)
+    label_x_size = BooleanProperty(True)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -263,19 +268,41 @@ class EntryBox(MDBoxLayout):
             manager.current = 'clavius'
             manager.transition.direction = 'down'
 
-        print(screen_name)
         if screen_name == 'general_settings':
             clavius = manager.get_screen('clavius')
-            clavius.general_settings = True
+            clavius.date_time = True
             clavius.active_tab = self.label[:-2]
 
-            print(screen.ids.time_dialog)
-
             clavius.fields = [
+                (
+                    screen.ids.set_hour,
+                    screen.ids.set_hour.ids.label_field.text
+                ),
+                (
+                    screen.ids.set_minute,
+                    screen.ids.set_minute.ids.label_field.text
+                ),
+                (
+                    screen.ids.set_second,
+                    screen.ids.set_second.ids.label_field.text
+                ),
+
+                (
+                    screen.ids.set_year,
+                    screen.ids.set_year.ids.label_field.text
+                ),
+                (
+                    screen.ids.set_month,
+                    screen.ids.set_month.ids.label_field.text
+                ),
+                (
+                    screen.ids.set_day,
+                    screen.ids.set_day.ids.label_field.text
+                ),
             ]
 
-            # manager.current = 'clavius'
-            # manager.transition.direction = 'down'
+            manager.current = 'clavius'
+            manager.transition.direction = 'down'
 
 
 class ConfigManager:
@@ -343,8 +370,6 @@ class MetaDataManager:
     def create_default_metadata(self):
 
         all_pass = self.config_manager.get('SIET1010', 'all_pass')
-
-        print(all_pass)
 
         if all_pass:
             low_frequency = 0.02
@@ -468,7 +493,6 @@ class Main(MDApp):
 
     def pulse_gpio(self):
         if not GPIO_AVAILABLE:
-            print("GPIO unavailable, skipping pulse")
             return
 
         try:

@@ -54,15 +54,12 @@ class QCTestScreen(MDScreen):
 
     def update_buttons_state(self, imported, started):
         if imported:
-            print('It is imported, but Not started')
             self.ids.set_test.disabled = True
             self.ids.qc_export.disabled = True
         elif started:
-            print('Not imported, but it is started')
             self.ids.set_test.disabled = False
             self.ids.qc_export.disabled = False
         else:
-            print('Not imported, Not started')
             self.ids.set_test.disabled = True
             self.ids.qc_export.disabled = True
 
@@ -131,7 +128,6 @@ class QCTestScreen(MDScreen):
         """Combine reference plot with test plot"""
         # Check if reference plot exists
         if self.fig is None or self.ax is None:
-            print("No reference plot to combine with")
             # If no reference plot, just show the test plot
             self.ids.qc_plot.figure = test_figure
             return
@@ -440,22 +436,6 @@ class QCTestScreen(MDScreen):
             )
         ) / 100
 
-        print(
-            f'\nuse_freq_shift: {use_freq_shift}',
-            f'use_damping: {use_damping}',
-            f'use_intensity: {use_intensity}',
-            f'use_split: {use_split}',
-            f'use_missing: {use_missing}',
-            f'use_added: {use_added}',
-            f'freq_shift_limit: {freq_shift_limit}',
-            f'damping_limit: {damping_limit}',
-            f'intensity_limit: {intensity_limit}',
-            f'split_gap: {split_gap}',
-            f'tol_hz: {tol_hz}',
-            f'min_dist: {min_dist}',
-            f'min_prom: {min_prom}',
-            sep='\n'
-        )
 
         ref_idx, _ = find_peaks(
             ref_spec,
@@ -475,8 +455,6 @@ class QCTestScreen(MDScreen):
         test_locs = f[test_idx]
         test_peak_vals = test_spec[test_idx]
 
-        # print(f'\ntest_peak_vals:\n{test_peak_vals}\n')
-        # print(f'test_locs:\n{test_locs}\n')
 
         num_ref_modes = len(ref_locs)
         num_test_modes = len(test_locs)
@@ -510,7 +488,6 @@ class QCTestScreen(MDScreen):
         added_modes = []
         for i in range(num_test_modes):
             if not used_test_idx[i]:
-                print(f'\n{"Added Mode":*^100}\n')
                 is_split = False
                 for j in range(num_ref_modes):
                     if not np.isnan(matched_test_f[j]) and abs(test_locs.iloc[i] - matched_test_f[j]) < split_gap:
@@ -521,7 +498,6 @@ class QCTestScreen(MDScreen):
 
         added_modes = np.array(added_modes)
 
-        print(added_modes, added_modes.shape)
 
         missing_mode = ref_locs[np.isnan(matched_test_f)] # This changed, be fucking careful!
 
@@ -618,13 +594,6 @@ class QCTestScreen(MDScreen):
             )
 
             qc_status.append("FAIL" if qc_fail[i] else "PASS")
-
-        # print(qc_status)
-        # print(fail_freq_shift)
-        # print(fail_damping)
-        # print(fail_intensity)
-        # print(fail_split)
-        # print(fail_missing)
 
         overall_status = False if "FAIL" in qc_status else True
 
@@ -800,7 +769,6 @@ class QCTestScreen(MDScreen):
         )
 
         if test_path == '': # Or the file did not exist!
-            print('Test Path not Found!')
             return False
 
         if status == 'PASS':

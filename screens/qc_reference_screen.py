@@ -22,21 +22,17 @@ class ReferenceSetScreen(MDScreen):
         self.display_slot_id()
         self.display_slot_name()
         imported = self.import_reference()
-        print(f'Imported: {imported}')
         self.update_buttons_state(imported=imported, started=False)
 
     def update_buttons_state(self, imported, started):
         if imported:
-            print('It is imported, but Not started')
             self.ids.set_ref.disabled = True
             self.ids.ref_export.disabled = True
             self.ids.reset_slot.disabled = False
         elif started:
-            print('Not imported, but it is started')
             self.ids.set_ref.disabled = False
             self.ids.ref_export.disabled = False
         else:
-            print('Not imported, Not started')
             self.ids.set_ref.disabled = True
             self.ids.ref_export.disabled = True
             self.ids.reset_slot.disabled = True
@@ -232,7 +228,6 @@ class ReferenceSetScreen(MDScreen):
         all_pass = all_pass == 'True'
 
         if all_pass:
-            print('All Pass is True!')
             self.manager.metadata_manager.put(
                 self.slot_id-1,
                 'low_frequency',
@@ -244,9 +239,6 @@ class ReferenceSetScreen(MDScreen):
                 24.0,
             )
         else:
-            print('All Pass is NOT True!')
-            print(low_frequency)
-            print(high_frequency)
             self.manager.metadata_manager.put(
                 self.slot_id-1,
                 'low_frequency',
@@ -302,10 +294,6 @@ class ReferenceSetScreen(MDScreen):
             self.slot_id-1,
             'high_frequency'
         )
-
-        print(f'Resolution: {resolution}')
-        print(f'Low Frequency: {low_frequency}')
-        print(f'High Frequency: {high_frequency}')
 
         info = (
             f"Resolution: {resolution} Hz\n"
